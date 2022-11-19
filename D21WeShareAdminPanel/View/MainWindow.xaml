@@ -6,7 +6,32 @@
         xmlns:local="clr-namespace:D21WeShareAdminPanel.View"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <StackPanel>
+        <TabControl Height="400">
+            <TabItem Header="Group">
+                <TextBlock>This is the group tab</TextBlock>
+            </TabItem>
 
-    </Grid>
+            <TabItem Header="User">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Width="400">
+                        <TextBlock>First name:</TextBlock>
+                        <TextBlock>Joesef</TextBlock>
+                        <TextBlock>Last name:</TextBlock>
+                        <TextBlock>Mandeli</TextBlock>
+                    </StackPanel>
+                    <StackPanel Width="400">
+                        <TextBlock>Groups: </TextBlock>
+                        <ListView x:Name="userIsInGroupsList">
+                            
+                        </ListView>
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+            
+            <TabItem Header="Other">
+                <TextBlock>This is the other tab</TextBlock>
+            </TabItem>
+        </TabControl>
+    </StackPanel>
 </Window>
