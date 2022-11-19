@@ -9,29 +9,80 @@
     <StackPanel>
         <TabControl Height="400">
             <TabItem Header="Group">
-                <TextBlock>This is the group tab</TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Width="200">
+                        <TextBlock FontWeight="DemiBold">Group name:</TextBlock>
+                        <TextBox Margin="10 0 0 0">Group 1</TextBox>
+                        <TextBlock FontWeight="DemiBold">Description:</TextBlock>
+                        <TextBox Margin="10 0 0 0">This is a group</TextBox>
+                    </StackPanel>
+                    <StackPanel Width="200">
+                        <TextBlock>Users:</TextBlock>
+                        <ListView x:Name="UsersInGroupList">
+
+                        </ListView>
+                    </StackPanel>
+                    <StackPanel Width="200">
+                        <TextBlock>Ingoing payments:</TextBlock>
+                        <ListView x:Name="GroupInPaymentsList">
+
+                        </ListView>
+                    </StackPanel>
+                    <StackPanel Width="200">
+                        <TextBlock>Outgoing payments:</TextBlock>
+                        <ListView x:Name="GroupOutPaymentsList">
+
+                        </ListView>
+                    </StackPanel>
+                </StackPanel>
             </TabItem>
 
             <TabItem Header="User">
                 <StackPanel Orientation="Horizontal">
-                    <StackPanel Width="400">
-                        <TextBlock>First name:</TextBlock>
-                        <TextBlock>Joesef</TextBlock>
-                        <TextBlock>Last name:</TextBlock>
-                        <TextBlock>Mandeli</TextBlock>
+                    <StackPanel Width="200">
+                        <TextBlock FontWeight="DemiBold" TextAlignment="Center">-= User information =-</TextBlock>
+                        <Separator></Separator>
+                        <TextBlock FontWeight="DemiBold">Username:</TextBlock>
+                        <TextBox Margin="10 0 0 0">JMTheMan</TextBox>
+                        <TextBlock FontWeight="DemiBold">First name:</TextBlock>
+                        <TextBox Margin="10 0 0 0">Joesef</TextBox>
+                        <TextBlock FontWeight="DemiBold">Last name:</TextBlock>
+                        <TextBox Margin="10 0 0 0">Mandeli</TextBox>
+                        <TextBlock FontWeight="DemiBold">Phone number:</TextBlock>
+                        <TextBox Margin="10 0 0 0">+45 88 88 88 88</TextBox>
+                        <TextBlock FontWeight="DemiBold">Email:</TextBlock>
+                        <TextBox Margin="10 0 0 0">JM@Mandeli.com</TextBox>
+                        <TextBlock FontWeight="DemiBold">Password:</TextBlock>
+                        <Button Margin="10 0 0 0">Reset</Button>
+                        <TextBlock FontWeight="DemiBold">Admin:</TextBlock>
+                        <CheckBox Margin="10 0 0 0">Administrator</CheckBox>
                     </StackPanel>
-                    <StackPanel Width="400">
-                        <TextBlock>Groups: </TextBlock>
-                        <ListView x:Name="userIsInGroupsList">
-                            
+                    <StackPanel Width="200">
+                        <TextBlock TextAlignment="Center">Groups</TextBlock>
+                        <ListView x:Name="UserIsInGroupsList">
+
+                        </ListView>
+                    </StackPanel>
+                    <StackPanel Width="200">
+                        <TextBlock TextAlignment="Center">Ingoing payments</TextBlock>
+                        <ListView x:Name="UserInPaymentsList">
+
+                        </ListView>
+                    </StackPanel>
+                    <StackPanel Width="200">
+                        <TextBlock TextAlignment="Center">Outgoing payments</TextBlock>
+                        <ListView x:Name="UserOutPaymentsList">
+
                         </ListView>
                     </StackPanel>
                 </StackPanel>
             </TabItem>
             
-            <TabItem Header="Other">
-                <TextBlock>This is the other tab</TextBlock>
+            <!-- Next iteration
+            <TabItem Header="Cards">
+                <TextBlock>This is the cards tab</TextBlock>
             </TabItem>
+            -->
         </TabControl>
     </StackPanel>
 </Window>

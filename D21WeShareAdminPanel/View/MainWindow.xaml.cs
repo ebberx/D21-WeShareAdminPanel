@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using D21WeShareAdminPanel.ViewModel;
 
 namespace D21WeShareAdminPanel.View
 {
@@ -20,8 +21,11 @@ namespace D21WeShareAdminPanel.View
     /// </summary>
     public partial class MainWindow : Window
     {
+        MainWindowViewModel viewModel;
         public MainWindow() {
             InitializeComponent();
+
+            viewModel = new MainWindowViewModel();
         }
     }
 }
