@@ -8,28 +8,80 @@
         Title="MainWindow" Height="450" Width="800">
     <StackPanel>
         <TabControl Height="400">
+
+            <TabItem Header="Search">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel>
+                        <TextBlock FontWeight="DemiBold" TextAlignment="Center">-= Search for information =-</TextBlock>
+                        <Separator></Separator>
+
+                        <TextBlock FontWeight="DemiBold">Group name:</TextBlock>
+                        <Grid Margin="10 0 10 0">
+                            <TextBox>Enter group name here...</TextBox>
+                            <Button HorizontalAlignment="Right">Search</Button>
+                        </Grid>
+
+                        <TextBlock FontWeight="DemiBold">Group ID:</TextBlock>
+                        <Grid Margin="10 0 10 0">
+                            <TextBox>Enter group ID here...</TextBox>
+                            <Button HorizontalAlignment="Right">Search</Button>
+                        </Grid>
+
+                        <TextBlock FontWeight="DemiBold">User name:</TextBlock>
+                        <Grid Margin="10 0 10 0">
+                            <TextBox>Enter user name here...</TextBox>
+                            <Button HorizontalAlignment="Right">Search</Button>
+                        </Grid>
+
+                        <TextBlock FontWeight="DemiBold">User ID:</TextBlock>
+                        <Grid Margin="10 0 10 0">
+                            <TextBox>Enter user ID here...</TextBox>
+                            <Button HorizontalAlignment="Right">Search</Button>
+                        </Grid>
+
+                        <TextBlock FontWeight="DemiBold">Transaction ID:</TextBlock>
+                        <Grid Margin="10 0 10 0">
+                            <TextBox>Enter transaction ID here...</TextBox>
+                            <Button HorizontalAlignment="Right">Search</Button>
+                        </Grid>
+
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
             <TabItem Header="Group">
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Width="200">
+                        <TextBlock FontWeight="DemiBold" TextAlignment="Center">-= Group information =-</TextBlock>
+                        <Separator></Separator>
                         <TextBlock FontWeight="DemiBold">Group name:</TextBlock>
                         <TextBox Margin="10 0 0 0">Group 1</TextBox>
                         <TextBlock FontWeight="DemiBold">Description:</TextBlock>
                         <TextBox Margin="10 0 0 0">This is a group</TextBox>
+                        <TextBlock FontWeight="DemiBold">Has concluded:</TextBlock>
+                        <TextBlock Margin="10 0 0 0">Yes/No</TextBlock>
                     </StackPanel>
                     <StackPanel Width="200">
-                        <TextBlock>Users:</TextBlock>
+                        <TextBlock TextAlignment="Center">Users</TextBlock>
                         <ListView x:Name="UsersInGroupList">
 
                         </ListView>
                     </StackPanel>
                     <StackPanel Width="200">
-                        <TextBlock>Ingoing payments:</TextBlock>
+                        <TextBlock TextAlignment="Center">Ingoing payments</TextBlock>
                         <ListView x:Name="GroupInPaymentsList">
 
                         </ListView>
                     </StackPanel>
                     <StackPanel Width="200">
-                        <TextBlock>Outgoing payments:</TextBlock>
+                        <TextBlock TextAlignment="Center">Outgoing payments</TextBlock>
                         <ListView x:Name="GroupOutPaymentsList">
 
                         </ListView>

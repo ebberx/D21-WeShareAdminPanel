@@ -22,10 +22,16 @@ namespace D21WeShareAdminPanel.View
     public partial class MainWindow : Window
     {
         MainWindowViewModel viewModel;
-        public MainWindow() {
+
+        string sessionToken;
+        
+        public MainWindow(String _sessionToken) {
             InitializeComponent();
 
             viewModel = new MainWindowViewModel();
+            
+            // Save session token for later use
+            this.sessionToken = _sessionToken;
         }
     }
 }
