@@ -12,13 +12,18 @@ namespace D21WeShareAdminPanel.Model
         public static void RequestToken() {
             // Create http request
             System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("https://api-wan-kenobi.ovh/api/UserGroup/GetToken/");
-            request.Method = "GET";
+            request.Method = "POST";
             request.ContentType = "application/json";
-            request.Accept = "text/html";
+            request.Accept = "text/plain";
 
-            // Set http request parameter
-            request.Headers.Add("Username", "Esben");
-            request.Headers.Add("Password", "password2");
+            // Set http request body
+            string body = "{\"username\":\"" + "Esben" + "\",\"password\":\"" + "password2" + "\"}";
+            byte[] bodyBytes = System.Text.Encoding.UTF8.GetBytes(body);
+            request.ContentLength = bodyBytes.Length;
+            using (System.IO.Stream requestStream = request.GetRequestStream()) {
+                requestStream.Write(bodyBytes, 0, bodyBytes.Length);
+                requestStream.Flush();
+            }
 
             // Execute http request and retrieve response
             System.Net.HttpWebResponse response = (System.Net.HttpWebResponse)request.GetResponse();
