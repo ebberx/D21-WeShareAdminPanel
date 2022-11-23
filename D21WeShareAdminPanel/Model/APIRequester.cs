@@ -9,7 +9,7 @@ namespace D21WeShareAdminPanel.Model
 {
     public class APIRequester {
 
-        public static void RequestToken() {
+        public static string RequestToken(string user, string password) {
             // Create http request
             System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("https://api-wan-kenobi.ovh/api/UserGroup/GetToken/");
             request.Method = "POST";
@@ -17,7 +17,7 @@ namespace D21WeShareAdminPanel.Model
             request.Accept = "text/plain";
 
             // Set http request body
-            string body = "{\"username\":\"" + "Esben" + "\",\"password\":\"" + "password2" + "\"}";
+            string body = "{\"username\":\"" + user + "\",\"password\":\"" + password + "\"}";
             byte[] bodyBytes = System.Text.Encoding.UTF8.GetBytes(body);
             request.ContentLength = bodyBytes.Length;
             using (System.IO.Stream requestStream = request.GetRequestStream()) {
@@ -32,8 +32,7 @@ namespace D21WeShareAdminPanel.Model
             System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream());
             string responseString = reader.ReadToEnd();
 
-            Debug.WriteLine(responseString);
-
+            return responseString;
         }
     }
 }

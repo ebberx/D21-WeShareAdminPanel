@@ -9,8 +9,8 @@ namespace D21WeShareAdminPanel.ViewModel
 {
     public class LoginDialogViewModel
     {
-        public void Login() {
-            APIRequester.RequestToken();
+        public void Login(string user, string password) {
+            APIRequester.RequestToken(user, password);
         }
 
     }

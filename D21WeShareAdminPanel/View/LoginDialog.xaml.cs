@@ -29,7 +29,7 @@ namespace D21WeShareAdminPanel.View
 
         private void OnLogin(object sender, RoutedEventArgs e) {
 
-            viewModel.Login();
+            viewModel.Login(userBox.Text, passwordBox.Text);
             /*
             // Show MainWindow view
             MainWindow mainWindow = new MainWindow("WW91IHNoYWxsIHBhc3Mh");

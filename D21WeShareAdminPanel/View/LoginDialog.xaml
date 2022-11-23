@@ -13,11 +13,11 @@
         
         <Separator Height="12" Background="Transparent"></Separator>
         <TextBlock>User:</TextBlock>
-        <TextBox>Input user name...</TextBox>
+        <TextBox x:Name="userBox">Input user name...</TextBox>
 
         <Separator Height="2" Background="Transparent"></Separator>
         <TextBlock>Password:</TextBlock>
-        <TextBox>Input password...</TextBox>
+        <TextBox x:Name="passwordBox">Input password...</TextBox>
 
         <Separator Height="22" Background="Transparent"></Separator>
         <Button Width="100" Click="OnLogin">Login</Button>
