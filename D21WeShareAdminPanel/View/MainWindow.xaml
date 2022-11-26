@@ -7,13 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <StackPanel>
-        <TabControl Height="400">
+        <TabControl x:Name="tabControl" Height="400">
 
             <TabItem Header="Search">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="3*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*" />
@@ -25,13 +25,13 @@
                         <TextBlock FontWeight="DemiBold">Group name:</TextBlock>
                         <Grid Margin="10 0 10 0">
                             <TextBox>Enter group name here...</TextBox>
-                            <Button HorizontalAlignment="Right">Search</Button>
+                            <Button HorizontalAlignment="Right" Click="onSearchGroupName">Search</Button>
                         </Grid>
 
                         <TextBlock FontWeight="DemiBold">Group ID:</TextBlock>
                         <Grid Margin="10 0 10 0">
-                            <TextBox>Enter group ID here...</TextBox>
-                            <Button HorizontalAlignment="Right">Search</Button>
+                            <TextBox x:Name="searchGroupIDBox">Enter group ID here...</TextBox>
+                            <Button HorizontalAlignment="Right" Click="onSearchGroupID">Search</Button>
                         </Grid>
 
                         <TextBlock FontWeight="DemiBold">User name:</TextBlock>
@@ -46,6 +46,12 @@
                             <Button HorizontalAlignment="Right">Search</Button>
                         </Grid>
 
+                        <TextBlock FontWeight="DemiBold">Transaction name:</TextBlock>
+                        <Grid Margin="10 0 10 0">
+                            <TextBox>Enter transaction name here...</TextBox>
+                            <Button HorizontalAlignment="Right">Search</Button>
+                        </Grid>
+
                         <TextBlock FontWeight="DemiBold">Transaction ID:</TextBlock>
                         <Grid Margin="10 0 10 0">
                             <TextBox>Enter transaction ID here...</TextBox>
@@ -53,25 +59,40 @@
                         </Grid>
 
                     </StackPanel>
+
+                    <ScrollViewer Grid.Column="1">
+                        <StackPanel x:Name="resultView">
+                            
+                        </StackPanel>
+                    </ScrollViewer>
                 </Grid>
             </TabItem>
-
+            
             <TabItem Header="Group">
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Width="200">
                         <TextBlock FontWeight="DemiBold" TextAlignment="Center">-= Group information =-</TextBlock>
                         <Separator></Separator>
+                        <TextBlock FontWeight="DemiBold">Group ID:</TextBlock>
+                        <TextBlock x:Name="groupID" Margin="10 0 0 0">0</TextBlock>
                         <TextBlock FontWeight="DemiBold">Group name:</TextBlock>
-                        <TextBox Margin="10 0 0 0">Group 1</TextBox>
+                        <TextBox x:Name="groupName" Margin="10 0 0 0">Group 1</TextBox>
                         <TextBlock FontWeight="DemiBold">Description:</TextBlock>
-                        <TextBox Margin="10 0 0 0">This is a group</TextBox>
+                        <TextBox x:Name="groupDescription" Margin="10 0 0 0">This is a group</TextBox>
+                        <TextBlock FontWeight="DemiBold">Is public:</TextBlock>
+                        <TextBlock x:Name="groupIsPublic" Margin="10 0 0 0">Yes/No</TextBlock>
                         <TextBlock FontWeight="DemiBold">Has concluded:</TextBlock>
-                        <TextBlock Margin="10 0 0 0">Yes/No</TextBlock>
+                        <TextBlock x:Name="groupHasConcluded" Margin="10 0 0 0">Yes/No</TextBlock>
                     </StackPanel>
                     <StackPanel Width="200">
                         <TextBlock TextAlignment="Center">Users</TextBlock>
-                        <ListView x:Name="UsersInGroupList">
-
+                        <ListView x:Name="UsersInGroupList" ItemsSource="{Binding ocUsersInGroup}" Margin="10 0 10 0">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding firstName}" />
+                                    <GridViewColumn Header="Last name" DisplayMemberBinding="{Binding lastName}" />
+                                </GridView>
+                            </ListView.View>
                         </ListView>
                     </StackPanel>
                     <StackPanel Width="200">

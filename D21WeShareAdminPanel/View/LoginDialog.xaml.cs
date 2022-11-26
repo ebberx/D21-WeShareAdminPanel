@@ -28,16 +28,14 @@ namespace D21WeShareAdminPanel.View
         }
 
         private void OnLogin(object sender, RoutedEventArgs e) {
-
-            viewModel.Login(userBox.Text, passwordBox.Text);
-            /*
-            // Show MainWindow view
-            MainWindow mainWindow = new MainWindow("WW91IHNoYWxsIHBhc3Mh");
-            mainWindow.Show();
-
-            // Close LoginDialog view
-            this.Close();
-            */
+            viewModel.Login(userBox.Text, passwordBox.Text);                                                                                                                                                                                                                                                                                                                                                                                                                                     
+            
+            if (viewModel.sessionToken != null) {
+                MainWindow mainWindow = new MainWindow(viewModel.sessionToken);
+                mainWindow.Show();
+                this.Close();
+            }
+            
         }
     }
 }
