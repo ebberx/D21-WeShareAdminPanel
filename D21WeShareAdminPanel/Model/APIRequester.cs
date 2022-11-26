@@ -9,9 +9,9 @@ namespace D21WeShareAdminPanel.Model
 {
     public class APIRequester {
 
-        public static string RequestToken(string user, string password) {
+        public static string Login(string user, string password) {
             // Create http request
-            System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("https://api-wan-kenobi.ovh/api/UserGroup/GetToken/");
+            System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("https://api-wan-kenobi.ovh/api/UserGroup/Login/");
             request.Method = "POST";
             request.ContentType = "application/json";
             request.Accept = "text/plain";
@@ -26,7 +26,39 @@ namespace D21WeShareAdminPanel.Model
             }
 
             // Execute http request and retrieve response
-            System.Net.HttpWebResponse response = (System.Net.HttpWebResponse)request.GetResponse();
+            System.Net.HttpWebResponse response;
+            try {
+                response = (System.Net.HttpWebResponse)request.GetResponse();
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+                return null!;
+            }
+            
+            // Read response
+            System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream());
+            string token = reader.ReadToEnd();
+
+            return token;
+        }
+
+        public async static Task<string> Get(string url, string token) {
+            // Create http request
+            System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(url);
+            request.Method = "GET";
+            request.ContentType = "application/json";
+            request.Accept = "text/plain";
+            request.Headers.Add("Token", token);
+
+            // Execute http request and retrieve response
+            System.Net.HttpWebResponse response;
+            try {
+                response = (System.Net.HttpWebResponse)await request.GetResponseAsync();
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+                return null!;
+            }
 
             // Read response
             System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream());
