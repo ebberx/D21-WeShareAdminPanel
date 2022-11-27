@@ -25,10 +25,8 @@ namespace D21WeShareAdminPanel.View
     public partial class MainWindow : Window
     {
         MainWindowViewModel viewModel;
-
         string sessionToken;
 
-             
         public MainWindow(String _sessionToken) {
             InitializeComponent();
 
@@ -41,36 +39,67 @@ namespace D21WeShareAdminPanel.View
 
         public void DisplayGroup(GroupDTO group) {
             // Display group info
+            groupID.Text = group.groupId.ToString();
             groupName.Text = group.name;
             groupDescription.Text = group.description;
-            groupIsPublic.Text = group.isPublic.ToString();
-            groupHasConcluded.Text = group.hasConcluded.ToString();
+            groupIsPublic.IsChecked = group.isPublic;
+            groupHasConcluded.IsChecked = group.hasConcluded;
 
             // Query group details and display group details
             viewModel.GetGroupDetailsByID(group.groupId);
             
         }
 
-        private void onSearchGroupName(object sender, RoutedEventArgs e) {
+        private async void onSearchGroupName(object sender, RoutedEventArgs e) {
 
-            // Stack panel container
-            StackPanel sp = new StackPanel();
-            sp.Orientation = Orientation.Vertical;
+            List<GroupDTO> groups = await viewModel.GetGroupsByName(searchGroupNameBox.Text);
 
-            // Add seperator inbetween results, but not for the first result
-            if (resultView.Children.Count != 0)
-                sp.Children.Add(new Separator() { Height = 10 });
-            sp.Children.Add(new TextBlock() { Text = "This is a search result object" });
+            if (groups == null)
+                return;
 
-            // Delete button
-            Button deleteBut = new Button() { Content = "X" };
-            deleteBut.Click += (o,e) => {
-                // delete sp
-                resultView.Children.Remove(sp);
-            };
-            sp.Children.Add(deleteBut);
-            resultView.Children.Add(sp);
+            foreach (GroupDTO group in groups) {
+                // Stack panel container
+                StackPanel sp = new StackPanel();
+                sp.Orientation = Orientation.Vertical;
 
+                sp.Children.Add(new Separator() { Height = 1 });
+                TextBlock title = new TextBlock() { Text = "-= Group Name =- " };
+                title.TextAlignment = TextAlignment.Center;
+                sp.Children.Add(title);
+                sp.Children.Add(new TextBlock() { Text = group.name });
+                sp.Children.Add(new TextBlock() { Text = group.description });
+                sp.Children.Add(new Separator() { Height = 1 });
+
+                // Button stackpanel
+                StackPanel buttonSP = new StackPanel();
+                buttonSP.Orientation = Orientation.Horizontal;
+                buttonSP.HorizontalAlignment = HorizontalAlignment.Center;
+
+                // Open button
+                Button openBut = new Button() { Content = "Open" };
+                openBut.Width = 40;
+                openBut.Margin = new Thickness(10, 0, 10, 0);
+                openBut.Click += (o, e) => {
+                    // Change to group tab
+                    tabControl.SelectedIndex = 1;
+                    DisplayGroup(group);
+                };
+                buttonSP.Children.Add(openBut);
+
+                // Delete button
+                Button deleteBut = new Button() { Content = "X" };
+                deleteBut.Width = 20;
+                deleteBut.Margin = new Thickness(10, 0, 10, 0);
+                deleteBut.Click += (o, e) => {
+                    // delete sp
+                    resultView.Children.Remove(sp);
+                };
+                buttonSP.Children.Add(deleteBut);
+
+                sp.Children.Add(buttonSP);
+                sp.Children.Add(new Separator() { Height = 1 });
+                resultView.Children.Add(sp);
+            }
         }
 
         private async void onSearchGroupID(object sender, RoutedEventArgs e) {
@@ -120,6 +149,18 @@ namespace D21WeShareAdminPanel.View
             sp.Children.Add(buttonSP);
             sp.Children.Add(new Separator() { Height = 1 });
             resultView.Children.Add(sp);
+        }
+
+        private void onGroupUpdate(object sender, RoutedEventArgs e) {
+            MessageBox.Show("Group updated");
+        }
+
+        private void onGroupAdd(object sender, RoutedEventArgs e) {
+            MessageBox.Show("Group added");
+        }
+
+        private void onGroupDelete(object sender, RoutedEventArgs e) {
+            MessageBox.Show("Group deleted");
         }
     }
 }

@@ -13,7 +13,7 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*" />
-                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="3*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*" />
@@ -24,7 +24,7 @@
 
                         <TextBlock FontWeight="DemiBold">Group name:</TextBlock>
                         <Grid Margin="10 0 10 0">
-                            <TextBox>Enter group name here...</TextBox>
+                            <TextBox x:Name="searchGroupNameBox">Enter group name here...</TextBox>
                             <Button HorizontalAlignment="Right" Click="onSearchGroupName">Search</Button>
                         </Grid>
 
@@ -62,28 +62,35 @@
 
                     <ScrollViewer Grid.Column="1">
                         <StackPanel x:Name="resultView">
-                            
+
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>
             </TabItem>
-            
+
             <TabItem Header="Group">
                 <StackPanel Orientation="Horizontal">
-                    <StackPanel Width="200">
-                        <TextBlock FontWeight="DemiBold" TextAlignment="Center">-= Group information =-</TextBlock>
-                        <Separator></Separator>
-                        <TextBlock FontWeight="DemiBold">Group ID:</TextBlock>
-                        <TextBlock x:Name="groupID" Margin="10 0 0 0">0</TextBlock>
-                        <TextBlock FontWeight="DemiBold">Group name:</TextBlock>
-                        <TextBox x:Name="groupName" Margin="10 0 0 0">Group 1</TextBox>
-                        <TextBlock FontWeight="DemiBold">Description:</TextBlock>
-                        <TextBox x:Name="groupDescription" Margin="10 0 0 0">This is a group</TextBox>
-                        <TextBlock FontWeight="DemiBold">Is public:</TextBlock>
-                        <TextBlock x:Name="groupIsPublic" Margin="10 0 0 0">Yes/No</TextBlock>
-                        <TextBlock FontWeight="DemiBold">Has concluded:</TextBlock>
-                        <TextBlock x:Name="groupHasConcluded" Margin="10 0 0 0">Yes/No</TextBlock>
-                    </StackPanel>
+                    <Grid Width="200">
+                        <StackPanel>
+                            <TextBlock FontWeight="DemiBold" TextAlignment="Center">-= Group information =-</TextBlock>
+                            <Separator></Separator>
+                            <TextBlock FontWeight="DemiBold">Group ID:</TextBlock>
+                            <TextBlock x:Name="groupID" Margin="10 0 0 0">0</TextBlock>
+                            <TextBlock FontWeight="DemiBold">Group name:</TextBlock>
+                            <TextBox x:Name="groupName" Margin="10 0 0 0">Group 1</TextBox>
+                            <TextBlock FontWeight="DemiBold">Description:</TextBlock>
+                            <TextBox x:Name="groupDescription" Margin="10 0 0 0">This is a group</TextBox>
+                            <TextBlock FontWeight="DemiBold">Is public:</TextBlock>
+                            <CheckBox x:Name="groupIsPublic" Margin="10 0 0 0">Yes/No</CheckBox>
+                            <TextBlock FontWeight="DemiBold">Has concluded:</TextBlock>
+                            <CheckBox x:Name="groupHasConcluded" Margin="10 0 0 0">Yes/No</CheckBox>
+                        </StackPanel>
+                        <DockPanel VerticalAlignment="Bottom">
+                            <Button Width="66" Click="onGroupUpdate">Update</Button>
+                            <Button Width="66" Click="onGroupAdd">Add</Button>
+                            <Button Width="67" Click="onGroupDelete">Delete</Button>
+                        </DockPanel>
+                    </Grid>
                     <StackPanel Width="200">
                         <TextBlock TextAlignment="Center">Users</TextBlock>
                         <ListView x:Name="UsersInGroupList" ItemsSource="{Binding ocUsersInGroup}" Margin="10 0 10 0">
@@ -150,7 +157,7 @@
                     </StackPanel>
                 </StackPanel>
             </TabItem>
-            
+
             <!-- Next iteration
             <TabItem Header="Cards">
                 <TextBlock>This is the cards tab</TextBlock>

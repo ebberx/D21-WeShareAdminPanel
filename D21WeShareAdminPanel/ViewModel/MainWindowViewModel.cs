@@ -30,10 +30,6 @@ namespace D21WeShareAdminPanel.ViewModel
             this.sessionToken = _sessionToken;
         }
 
-        public void SearchGroup(string groupName) {
-        
-        }
-
         public async Task<GroupDTO> GetGroupByID(int id) {
             string response = await APIRequester.Get("https://api-wan-kenobi.ovh/api/UserGroup/GetGroupDetailsByGroupID/" + id, sessionToken);
 
@@ -53,6 +49,27 @@ namespace D21WeShareAdminPanel.ViewModel
             }
 
             return group != null ? group : null!;
+        }
+
+        public async Task<List<GroupDTO>> GetGroupsByName(string search) {
+            string response = await APIRequester.Get("https://api-wan-kenobi.ovh/api/UserGroup/SearchShareGroups/" + search, sessionToken);
+
+            // Check if response empty
+            if (String.IsNullOrEmpty(response)) {
+                Debug.WriteLine("Response is empty");
+                return null!;
+            }
+
+            List<GroupDTO>? groups;
+            try {
+                groups = JsonSerializer.Deserialize<List<GroupDTO>>(response);
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+                return null!;
+            }
+
+            return groups != null ? groups : null!;
         }
 
         public async void GetGroupDetailsByID(int id) {
