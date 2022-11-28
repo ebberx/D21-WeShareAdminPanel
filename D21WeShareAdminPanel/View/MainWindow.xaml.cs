@@ -45,9 +45,23 @@ namespace D21WeShareAdminPanel.View
             groupIsPublic.IsChecked = group.isPublic;
             groupHasConcluded.IsChecked = group.hasConcluded;
 
-            // Query group details and display group details
+            // Query users in group
             viewModel.GetGroupDetailsByID(group.groupId);
-            
+
+        }
+
+        public void DisplayUser(UserDTO user) {
+            // Display group info
+            userUserID.Text = user.userId.ToString();
+            userUserName.Text = user.userName;
+            userFirstName.Text = user.firstName;
+            userLastName.Text = user.lastName;
+            userPhoneNumber.Text = user.phoneNumber;
+            userEmail.Text = user.email;
+            userIsAdminCheck.IsChecked = user.isAdmin;
+
+            // Query groups that user is a part of
+            //viewModel.GetGroupDetailsByID(user.userID);
         }
 
         private async void onSearchGroupName(object sender, RoutedEventArgs e) {
@@ -161,6 +175,69 @@ namespace D21WeShareAdminPanel.View
 
         private void onGroupDelete(object sender, RoutedEventArgs e) {
             MessageBox.Show("Group deleted");
+        }
+
+        private async void onSearchUserName(object sender, RoutedEventArgs e) {
+            List<UserDTO> users = await viewModel.GetUsersByName(searchUserNameBox.Text);
+
+            if (users == null)
+                return;
+
+            foreach (UserDTO user in users) {
+                // Stack panel container
+                StackPanel sp = new StackPanel();
+                sp.Orientation = Orientation.Vertical;
+
+                sp.Children.Add(new Separator() { Height = 1 });
+                TextBlock title = new TextBlock() { Text = "-= User Name =- " };
+                title.TextAlignment = TextAlignment.Center;
+                sp.Children.Add(title);
+                sp.Children.Add(new TextBlock() { Text = user.userName });
+                sp.Children.Add(new TextBlock() { Text = user.firstName + " " + user.lastName });
+                sp.Children.Add(new Separator() { Height = 1 });
+
+                // Button stackpanel
+                StackPanel buttonSP = new StackPanel();
+                buttonSP.Orientation = Orientation.Horizontal;
+                buttonSP.HorizontalAlignment = HorizontalAlignment.Center;
+
+                // Open button
+                Button openBut = new Button() { Content = "Open" };
+                openBut.Width = 40;
+                openBut.Margin = new Thickness(10, 0, 10, 0);
+                openBut.Click += (o, e) => {
+                    // Change to group tab
+                    tabControl.SelectedIndex = 2;
+                    DisplayUser(user);
+                };
+                buttonSP.Children.Add(openBut);
+
+                // Delete button
+                Button deleteBut = new Button() { Content = "X" };
+                deleteBut.Width = 20;
+                deleteBut.Margin = new Thickness(10, 0, 10, 0);
+                deleteBut.Click += (o, e) => {
+                    // delete sp
+                    resultView.Children.Remove(sp);
+                };
+                buttonSP.Children.Add(deleteBut);
+
+                sp.Children.Add(buttonSP);
+                sp.Children.Add(new Separator() { Height = 1 });
+                resultView.Children.Add(sp);
+            }
+        }
+
+        private void onSearchUserID(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void onSearchTransactionName(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void onSearchTransactionID(object sender, RoutedEventArgs e) {
+
         }
     }
 }

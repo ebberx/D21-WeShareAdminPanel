@@ -98,5 +98,25 @@ namespace D21WeShareAdminPanel.ViewModel
             
         }
 
+        public async Task<List<UserDTO>> GetUsersByName(string search) {
+            string response = await APIRequester.Get("https://api-wan-kenobi.ovh/api/UserGroup/SearchShareUsers/" + search, sessionToken);
+
+            // Check if response empty
+            if (String.IsNullOrEmpty(response)) {
+                Debug.WriteLine("Response is empty");
+            }
+
+            List<UserDTO>? users;
+            try {
+                users = JsonSerializer.Deserialize<List<UserDTO>>(response);
+                return users != null ? users : null!;
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+            }
+            
+            return null!;
+        }
+
     }
 }

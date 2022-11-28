@@ -36,26 +36,26 @@
 
                         <TextBlock FontWeight="DemiBold">User name:</TextBlock>
                         <Grid Margin="10 0 10 0">
-                            <TextBox>Enter user name here...</TextBox>
-                            <Button HorizontalAlignment="Right">Search</Button>
+                            <TextBox x:Name="searchUserNameBox">Enter user name here...</TextBox>
+                            <Button HorizontalAlignment="Right" Click="onSearchUserName">Search</Button>
                         </Grid>
 
                         <TextBlock FontWeight="DemiBold">User ID:</TextBlock>
                         <Grid Margin="10 0 10 0">
                             <TextBox>Enter user ID here...</TextBox>
-                            <Button HorizontalAlignment="Right">Search</Button>
+                            <Button HorizontalAlignment="Right" Click="onSearchUserID">Search</Button>
                         </Grid>
 
                         <TextBlock FontWeight="DemiBold">Transaction name:</TextBlock>
                         <Grid Margin="10 0 10 0">
                             <TextBox>Enter transaction name here...</TextBox>
-                            <Button HorizontalAlignment="Right">Search</Button>
+                            <Button HorizontalAlignment="Right" Click="onSearchTransactionName">Search</Button>
                         </Grid>
 
                         <TextBlock FontWeight="DemiBold">Transaction ID:</TextBlock>
                         <Grid Margin="10 0 10 0">
                             <TextBox>Enter transaction ID here...</TextBox>
-                            <Button HorizontalAlignment="Right">Search</Button>
+                            <Button HorizontalAlignment="Right" Click="onSearchTransactionID">Search</Button>
                         </Grid>
 
                     </StackPanel>
@@ -122,20 +122,22 @@
                     <StackPanel Width="200">
                         <TextBlock FontWeight="DemiBold" TextAlignment="Center">-= User information =-</TextBlock>
                         <Separator></Separator>
+                        <TextBlock FontWeight="DemiBold">User ID:</TextBlock>
+                        <TextBlock x:Name="userUserID" Margin="10 0 0 0">0</TextBlock>
                         <TextBlock FontWeight="DemiBold">Username:</TextBlock>
-                        <TextBox Margin="10 0 0 0">JMTheMan</TextBox>
+                        <TextBox x:Name="userUserName" Margin="10 0 0 0"></TextBox>
                         <TextBlock FontWeight="DemiBold">First name:</TextBlock>
-                        <TextBox Margin="10 0 0 0">Joesef</TextBox>
+                        <TextBox x:Name="userFirstName" Margin="10 0 0 0"></TextBox>
                         <TextBlock FontWeight="DemiBold">Last name:</TextBlock>
-                        <TextBox Margin="10 0 0 0">Mandeli</TextBox>
+                        <TextBox x:Name="userLastName" Margin="10 0 0 0"></TextBox>
                         <TextBlock FontWeight="DemiBold">Phone number:</TextBlock>
-                        <TextBox Margin="10 0 0 0">+45 88 88 88 88</TextBox>
+                        <TextBox x:Name="userPhoneNumber" Margin="10 0 0 0"></TextBox>
                         <TextBlock FontWeight="DemiBold">Email:</TextBlock>
-                        <TextBox Margin="10 0 0 0">JM@Mandeli.com</TextBox>
+                        <TextBox x:Name="userEmail" Margin="10 0 0 0"></TextBox>
                         <TextBlock FontWeight="DemiBold">Password:</TextBlock>
-                        <Button Margin="10 0 0 0">Reset</Button>
+                        <Button x:Name="userResetPasswordBut" Margin="10 0 0 0">Reset</Button>
                         <TextBlock FontWeight="DemiBold">Admin:</TextBlock>
-                        <CheckBox Margin="10 0 0 0">Administrator</CheckBox>
+                        <CheckBox x:Name="userIsAdminCheck" Margin="10 0 0 0">Yes/No</CheckBox>
                     </StackPanel>
                     <StackPanel Width="200">
                         <TextBlock TextAlignment="Center">Groups</TextBlock>

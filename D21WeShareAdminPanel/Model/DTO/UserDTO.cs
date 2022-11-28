@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace D21WeShareAdminPanel.Model.DTO
 {
     public class UserDTO {
-        public int userID { get; set; }
+        public int userId { get; set; }
         public string? userName { get; set; }
         public string? phoneNumber { get; set; }
         public string? firstName { get; set; }
