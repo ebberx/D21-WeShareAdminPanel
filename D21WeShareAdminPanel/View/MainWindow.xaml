@@ -42,19 +42,19 @@
 
                         <TextBlock FontWeight="DemiBold">User ID:</TextBlock>
                         <Grid Margin="10 0 10 0">
-                            <TextBox>Enter user ID here...</TextBox>
+                            <TextBox x:Name="searchUserIDBox">Enter user ID here...</TextBox>
                             <Button HorizontalAlignment="Right" Click="onSearchUserID">Search</Button>
                         </Grid>
 
                         <TextBlock FontWeight="DemiBold">Transaction name:</TextBlock>
                         <Grid Margin="10 0 10 0">
-                            <TextBox>Enter transaction name here...</TextBox>
+                            <TextBox x:Name="searchTransactionNameBox">Enter transaction name here...</TextBox>
                             <Button HorizontalAlignment="Right" Click="onSearchTransactionName">Search</Button>
                         </Grid>
 
                         <TextBlock FontWeight="DemiBold">Transaction ID:</TextBlock>
                         <Grid Margin="10 0 10 0">
-                            <TextBox>Enter transaction ID here...</TextBox>
+                            <TextBox x:Name="searchTransactionIDBox">Enter transaction ID here...</TextBox>
                             <Button HorizontalAlignment="Right" Click="onSearchTransactionID">Search</Button>
                         </Grid>
 

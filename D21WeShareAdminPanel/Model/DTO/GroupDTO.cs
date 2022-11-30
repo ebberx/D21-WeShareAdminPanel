@@ -12,6 +12,9 @@ namespace D21WeShareAdminPanel.Model.DTO
         public string? description { get; set; }
         public bool hasConcluded { get; set; }
         public bool isPublic { get; set; }
+        public string? creationDate { get; set; }
+        public string? conclusionDate { get; set; }
+        public string? lastActiveDate { get; set; }
 
     }
 }

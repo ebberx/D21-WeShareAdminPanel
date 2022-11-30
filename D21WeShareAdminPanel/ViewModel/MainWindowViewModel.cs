@@ -31,7 +31,7 @@ namespace D21WeShareAdminPanel.ViewModel
         }
 
         public async Task<GroupDTO> GetGroupByID(int id) {
-            string response = await APIRequester.Get("https://api-wan-kenobi.ovh/api/UserGroup/GetGroupDetailsByGroupID/" + id, sessionToken);
+            string response = await APIRequester.Get("https://api-wan-kenobi.ovh/api/ShareGroup/GetGroupDetailsByGroupID/" + id, sessionToken);
 
             // Check if response empty
             if (String.IsNullOrEmpty(response)) {
@@ -52,7 +52,7 @@ namespace D21WeShareAdminPanel.ViewModel
         }
 
         public async Task<List<GroupDTO>> GetGroupsByName(string search) {
-            string response = await APIRequester.Get("https://api-wan-kenobi.ovh/api/UserGroup/SearchShareGroups/" + search, sessionToken);
+            string response = await APIRequester.Get("https://api-wan-kenobi.ovh/api/ShareGroup/SearchShareGroups/" + search, sessionToken);
 
             // Check if response empty
             if (String.IsNullOrEmpty(response)) {
@@ -78,6 +78,7 @@ namespace D21WeShareAdminPanel.ViewModel
             // Check if response empty
             if (String.IsNullOrEmpty(response)) {
                 Debug.WriteLine("Response is empty");
+                return;
             }
 
             List<GroupDetailsDTO>? groupDetails;
@@ -97,24 +98,48 @@ namespace D21WeShareAdminPanel.ViewModel
             }
             
         }
+        
 
-        public async Task<List<UserDTO>> GetUsersByName(string search) {
+        public async Task<UserDTO> GetUsersByID(string search) {
             string response = await APIRequester.Get("https://api-wan-kenobi.ovh/api/UserGroup/SearchShareUsers/" + search, sessionToken);
 
             // Check if response empty
             if (String.IsNullOrEmpty(response)) {
                 Debug.WriteLine("Response is empty");
+                return null!;
+            }
+
+            UserDTO? user;
+            try {
+                user = JsonSerializer.Deserialize<UserDTO>(response);
+                return user != null ? user : null!;
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+            }
+            
+            return null!;
+        }
+
+        public async Task<List<UserDTO>> GetUsersByName(string search) {
+            string response = await APIRequester.Get("https://api-wan-kenobi.ovh/api/ShareUser/SearchShareUsers/" + search, sessionToken);
+
+            // Check if response empty
+            if (String.IsNullOrEmpty(response)) {
+                Debug.WriteLine("Response is empty");
+                return null!;
             }
 
             List<UserDTO>? users;
             try {
+                Debug.WriteLine(response);
                 users = JsonSerializer.Deserialize<List<UserDTO>>(response);
                 return users != null ? users : null!;
             }
             catch (Exception e) {
                 Debug.WriteLine(e.Message);
             }
-            
+
             return null!;
         }
 

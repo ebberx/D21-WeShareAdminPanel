@@ -15,5 +15,10 @@ namespace D21WeShareAdminPanel.Model.DTO
         public string? email { get; set; }
         public string? password { get; set; }
         public bool isAdmin { get; set; }
+        public int questionId { get; set; }
+        public string? securityAnswer { get; set; }
+        public bool isDisabled { get; set; }
+        public bool isBlacklisted { get; set; }
+        public string? question { get; set; }
     }
 }

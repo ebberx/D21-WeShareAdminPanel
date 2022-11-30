@@ -11,7 +11,7 @@ namespace D21WeShareAdminPanel.Model
 
         public static string Login(string user, string password) {
             // Create http request
-            System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("https://api-wan-kenobi.ovh/api/UserGroup/Login/");
+            System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("https://api-wan-kenobi.ovh/api/Main/Login/");
             request.Method = "POST";
             request.ContentType = "application/json";
             request.Accept = "text/plain";
