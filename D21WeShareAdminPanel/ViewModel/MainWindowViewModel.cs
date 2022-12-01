@@ -100,8 +100,8 @@ namespace D21WeShareAdminPanel.ViewModel
         }
         
 
-        public async Task<UserDTO> GetUsersByID(string search) {
-            string response = await APIRequester.Get("https://api-wan-kenobi.ovh/api/UserGroup/SearchShareUsers/" + search, sessionToken);
+        public async Task<UserDTO> GetUsersByID(string id) {
+            string response = await APIRequester.Get("https://api-wan-kenobi.ovh/api/ShareUser/GetUserByID/" + id, sessionToken);
 
             // Check if response empty
             if (String.IsNullOrEmpty(response)) {

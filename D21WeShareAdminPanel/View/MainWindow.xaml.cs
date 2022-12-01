@@ -284,5 +284,18 @@ namespace D21WeShareAdminPanel.View
         private void onSearchTransactionID(object sender, RoutedEventArgs e) {
 
         }
+
+        private void onLogOut(object sender, RoutedEventArgs e) {
+            // Show login dialog
+            LoginDialog loginDialog = new LoginDialog();
+            loginDialog.Show();
+
+            // Close this window 
+            this.Close();
+        }
+
+        private void onUpdateTOS(object sender, RoutedEventArgs e) {
+
+        }
     }
 }
