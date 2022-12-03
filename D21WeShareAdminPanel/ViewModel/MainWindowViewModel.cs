@@ -16,14 +16,21 @@ namespace D21WeShareAdminPanel.ViewModel
     public class MainWindowViewModel : Bindable {
 
         public string sessionToken;
-    
+
         // Users in group OC
         public ObservableCollection<UserDTO> ocUsersInGroup {
-            get { return _ocUsersInGroup; }
+            get { return _ocUsersInGroup!; }
             set { _ocUsersInGroup = value; propertyIsChanged(); }
         }
-        private ObservableCollection<UserDTO> _ocUsersInGroup;
-        
+        private ObservableCollection<UserDTO>? _ocUsersInGroup;
+
+        // Groups that the user is in OC
+        public ObservableCollection<GroupDTO> ocGroupsOfUser {
+            get { return _ocGroupsOfUser!; }
+            set { _ocGroupsOfUser = value; propertyIsChanged(); }
+        }
+        private ObservableCollection<GroupDTO>? _ocGroupsOfUser;
+
 
         public MainWindowViewModel(string _sessionToken) {
             // Save session token for later use
@@ -41,7 +48,8 @@ namespace D21WeShareAdminPanel.ViewModel
 
             GroupDTO? group;
             try {
-                group = JsonSerializer.Deserialize<GroupDTO>(response);
+                JsonSerializerOptions options = new() { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull };
+                group = JsonSerializer.Deserialize<GroupDTO>(response, options);
             }
             catch (Exception e) {
                 Debug.WriteLine(e.Message);
@@ -62,7 +70,8 @@ namespace D21WeShareAdminPanel.ViewModel
 
             List<GroupDTO>? groups;
             try {
-                groups = JsonSerializer.Deserialize<List<GroupDTO>>(response);
+                JsonSerializerOptions options = new() { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull };
+                groups = JsonSerializer.Deserialize<List<GroupDTO>>(response, options);
             }
             catch (Exception e) {
                 Debug.WriteLine(e.Message);
@@ -83,7 +92,8 @@ namespace D21WeShareAdminPanel.ViewModel
 
             List<GroupDetailsDTO>? groupDetails;
             try {
-                groupDetails = JsonSerializer.Deserialize<List<GroupDetailsDTO>>(response);
+                JsonSerializerOptions options = new() { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull };
+                groupDetails = JsonSerializer.Deserialize<List<GroupDetailsDTO>>(response, options);
 
                 // FIXME: This does not take null values into account
                 if (groupDetails != null) {
@@ -98,7 +108,6 @@ namespace D21WeShareAdminPanel.ViewModel
             }
             
         }
-        
 
         public async Task<UserDTO> GetUsersByID(string id) {
             string response = await APIRequester.Get("https://api-wan-kenobi.ovh/api/ShareUser/GetUserByID/" + id, sessionToken);
@@ -111,7 +120,8 @@ namespace D21WeShareAdminPanel.ViewModel
 
             UserDTO? user;
             try {
-                user = JsonSerializer.Deserialize<UserDTO>(response);
+                JsonSerializerOptions options = new() { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull };
+                user = JsonSerializer.Deserialize<UserDTO>(response, options);
                 return user != null ? user : null!;
             }
             catch (Exception e) {
@@ -133,7 +143,9 @@ namespace D21WeShareAdminPanel.ViewModel
             List<UserDTO>? users;
             try {
                 Debug.WriteLine(response);
-                users = JsonSerializer.Deserialize<List<UserDTO>>(response);
+                JsonSerializerOptions options = new() { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull };
+                users = JsonSerializer.Deserialize<List<UserDTO>>(response, options);
+                
                 return users != null ? users : null!;
             }
             catch (Exception e) {
