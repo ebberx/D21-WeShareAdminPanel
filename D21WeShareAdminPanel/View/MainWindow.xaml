@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:D21WeShareAdminPanel.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="480" Width="800">
+        Title="MainWindow" Height="580" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
@@ -164,30 +164,74 @@
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
                     
-                    <StackPanel Grid.Column="0">
-                        <TextBlock FontWeight="DemiBold" TextAlignment="Center">-= User information =-</TextBlock>
-                        <Separator></Separator>
-                        <TextBlock FontWeight="DemiBold">User ID:</TextBlock>
-                        <TextBlock x:Name="userUserID" Margin="10 0 0 0">0</TextBlock>
-                        <TextBlock FontWeight="DemiBold">Username:</TextBlock>
-                        <TextBox x:Name="userUserName" Margin="10 0 0 0"></TextBox>
-                        <TextBlock FontWeight="DemiBold">First name:</TextBlock>
-                        <TextBox x:Name="userFirstName" Margin="10 0 0 0"></TextBox>
-                        <TextBlock FontWeight="DemiBold">Last name:</TextBlock>
-                        <TextBox x:Name="userLastName" Margin="10 0 0 0"></TextBox>
-                        <TextBlock FontWeight="DemiBold">Phone number:</TextBlock>
-                        <TextBox x:Name="userPhoneNumber" Margin="10 0 0 0"></TextBox>
-                        <TextBlock FontWeight="DemiBold">Email:</TextBlock>
-                        <TextBox x:Name="userEmail" Margin="10 0 0 0"></TextBox>
-                        <TextBlock FontWeight="DemiBold">Password:</TextBlock>
-                        <Button x:Name="userResetPasswordBut" Margin="10 0 0 0">Reset</Button>
-                        <TextBlock FontWeight="DemiBold">Admin:</TextBlock>
-                        <CheckBox x:Name="userIsAdminCheck" Margin="10 0 0 0">Yes/No</CheckBox>
-                    </StackPanel>
-                    <StackPanel Grid.Column="1">
-                        <TextBlock TextAlignment="Center">Groups</TextBlock>
-                        <ListView x:Name="UserIsInGroupsList">
+                    <Grid Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
 
+                        <ScrollViewer>
+                            <StackPanel>
+                                <TextBlock FontWeight="DemiBold" TextAlignment="Center">-= User information =-</TextBlock>
+                                <Separator></Separator>
+                                <TextBlock FontWeight="DemiBold">User ID:</TextBlock>
+                                <TextBlock x:Name="userUserID" Margin="10 0 0 0">0</TextBlock>
+                                <TextBlock FontWeight="DemiBold">Username:</TextBlock>
+                                <TextBox x:Name="userUserName" Margin="10 0 0 0"></TextBox>
+                                <TextBlock FontWeight="DemiBold">First name:</TextBlock>
+                                <TextBox x:Name="userFirstName" Margin="10 0 0 0"></TextBox>
+                                <TextBlock FontWeight="DemiBold">Last name:</TextBlock>
+                                <TextBox x:Name="userLastName" Margin="10 0 0 0"></TextBox>
+                                <TextBlock FontWeight="DemiBold">Phone number:</TextBlock>
+                                <TextBox x:Name="userPhoneNumber" Margin="10 0 0 0"></TextBox>
+                                <TextBlock FontWeight="DemiBold">Email:</TextBlock>
+                                <TextBox x:Name="userEmail" Margin="10 0 0 0"></TextBox>
+                                <TextBlock FontWeight="DemiBold">Password:</TextBlock>
+                                <Button x:Name="userResetPasswordBut" Margin="10 0 0 0" Click="onGroupPassReset">Reset</Button>
+                                <TextBlock FontWeight="DemiBold">Admin:</TextBlock>
+                                <CheckBox x:Name="userIsAdminCheck" Margin="10 0 0 0">Yes/No</CheckBox>
+                                <TextBlock FontWeight="DemiBold">Question ID:</TextBlock>
+                                <TextBlock x:Name="userQuestionIDBox" Margin="10 0 0 0"></TextBlock>
+                                <TextBlock FontWeight="DemiBold">Security Answer:</TextBlock>
+                                <TextBox x:Name="userSecurityAnswerBox" Margin="10 0 0 0" Height="auto" TextWrapping="Wrap"></TextBox>
+                                <TextBlock FontWeight="DemiBold">Is disabled:</TextBlock>
+                                <CheckBox x:Name="userIsDisabledCheck" Margin="10 0 0 0">Yes/No</CheckBox>
+                                <TextBlock FontWeight="DemiBold">Is blacklisted:</TextBlock>
+                                <CheckBox x:Name="userIsBlacklistedCheck" Margin="10 0 0 0">Yes/No</CheckBox>
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+
+                            <Button Grid.Column="0" Click="onUserUpdate">Update</Button>
+                            <Button Grid.Column="1" Click="onUserAdd">Add</Button>
+                            <Button Grid.Column="2" Click="onUserDelete">Delete</Button>
+                        </Grid>
+                    </Grid>
+
+                        <StackPanel Grid.Column="1">
+                        <TextBlock TextAlignment="Center">Groups</TextBlock>
+                        <ListView x:Name="UserIsInGroupsList" ItemsSource="{Binding ocGroupsOfUser}" Margin="10 0 10 0" MouseDown="onGroupOfUserMouseDown">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" MouseDown="onGroupOfUserMouseDown">
+                                        <TextBlock Text="{Binding groupId}"></TextBlock>
+                                        <Separator Width="10" Background="Transparent"></Separator>
+                                        <TextBlock Text="{Binding name}"></TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
                         </ListView>
                     </StackPanel>
                     <StackPanel Grid.Column="2">

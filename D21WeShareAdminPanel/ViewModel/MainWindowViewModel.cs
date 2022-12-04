@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using D21WeShareAdminPanel.Model.DTO;
 using System.Collections.ObjectModel;
 using NNTPClient.Model;
+using Microsoft.Win32;
 
 namespace D21WeShareAdminPanel.ViewModel
 {
@@ -31,6 +32,17 @@ namespace D21WeShareAdminPanel.ViewModel
         }
         private ObservableCollection<GroupDTO>? _ocGroupsOfUser;
 
+        // Group tab object and update display method delegate
+        public delegate void DisplayGroupDelegate();
+        public DisplayGroupDelegate DisplayGroup = null!;
+        public GroupDTO groupInTab { get { return _groupInTab!; } set { _groupInTab = value; DisplayGroup(); } }
+        private GroupDTO? _groupInTab;
+
+        // User tab object and update display method delegate
+        public delegate void DisplayUserDelegate();
+        public DisplayGroupDelegate DisplayUser = null!;
+        public UserDTO userInTab { get { return _userInTab!; } set { _userInTab = value; DisplayUser(); } }
+        private UserDTO? _userInTab;
 
         public MainWindowViewModel(string _sessionToken) {
             // Save session token for later use
@@ -142,7 +154,6 @@ namespace D21WeShareAdminPanel.ViewModel
 
             List<UserDTO>? users;
             try {
-                Debug.WriteLine(response);
                 JsonSerializerOptions options = new() { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull };
                 users = JsonSerializer.Deserialize<List<UserDTO>>(response, options);
                 
@@ -154,6 +165,117 @@ namespace D21WeShareAdminPanel.ViewModel
 
             return null!;
         }
+
+        public async void GetAllGroupsForUser(int userid) {
+            string response = await APIRequester.Get("https://api-wan-kenobi.ovh/api/ShareUser/GetAllUsersGroups/" + userid, sessionToken);
+
+            // Check if response empty
+            if (String.IsNullOrEmpty(response)) {
+                Debug.WriteLine("Response is empty");
+                return;
+            }
+
+            List<GroupDTO>? groupDetails;
+            try {
+                JsonSerializerOptions options = new() { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull };
+                groupDetails = JsonSerializer.Deserialize<List<GroupDTO>>(response, options);
+                if(groupDetails != null)
+                    ocGroupsOfUser = new ObservableCollection<GroupDTO>(groupDetails);
+
+                return;
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        public async Task<List<ExpenseDTO>> GetExpensesByName(string search) {
+            string response = await APIRequester.Get("https://api-wan-kenobi.ovh/api/Expense/SearchExpenses/" + search, sessionToken);
+
+            // Check if response empty
+            if (String.IsNullOrEmpty(response)) {
+                Debug.WriteLine("Response is empty");
+                return null!;
+            }
+
+            List<ExpenseDTO>? expenses;
+            try {
+                Debug.WriteLine(response);
+                JsonSerializerOptions options = new() { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull };
+                expenses = JsonSerializer.Deserialize<List<ExpenseDTO>>(response, options);
+
+                return expenses != null ? expenses : null!;
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+            }
+
+            return null!;
+        }
+
+        public async Task<ExpenseDTO> GetExpenseByID(string search) {
+            string response = await APIRequester.Get("https://api-wan-kenobi.ovh/api/Expense/GetExpense/" + search, sessionToken);
+
+            // Check if response empty
+            if (String.IsNullOrEmpty(response)) {
+                Debug.WriteLine("Response is empty");
+                return null!;
+            }
+
+            ExpenseDTO? expense;
+            try {
+                Debug.WriteLine(response);
+                JsonSerializerOptions options = new() { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull };
+                expense = JsonSerializer.Deserialize<ExpenseDTO>(response, options);
+
+                return expense != null ? expense : null!;
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+            }
+
+            return null!;
+        }
+
+        public async Task<ExpenseDTO> GetInPaymentByID(string search) {
+            string response = await APIRequester.Get("https://api-wan-kenobi.ovh/api/InPayment/GetInPayment/" + search, sessionToken);
+
+            // Check if response empty
+            if (String.IsNullOrEmpty(response)) {
+                Debug.WriteLine("Response is empty");
+                return null!;
+            }
+
+            ExpenseDTO? expense;
+            try {
+                Debug.WriteLine(response);
+                JsonSerializerOptions options = new() { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull };
+                expense = JsonSerializer.Deserialize<ExpenseDTO>(response, options);
+
+                return expense != null ? expense : null!;
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+            }
+
+            return null!;
+        }
+
+        public async void ResetPasswordOfUser() {
+            await APIRequester.ResetPassword(userInTab.userId);
+        }
+
+        public async void UpdateUser(UserDTO user) {
+            user.password = userInTab.password;
+            user.address = userInTab.address;
+            user.questionString = userInTab.questionString;
+            
+            userInTab = user;
+            string response = await APIRequester.UpdateUser(userInTab, sessionToken);
+            Debug.WriteLine(response);
+        }
+
+
 
     }
 }
