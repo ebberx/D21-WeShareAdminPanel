@@ -291,11 +291,11 @@ namespace D21WeShareAdminPanel.View
         }
 
         private void onSearchTransactionName(object sender, RoutedEventArgs e) {
-
+            MessageBox.Show("Unimplemented");
         }
 
         private void onSearchTransactionID(object sender, RoutedEventArgs e) {
-
+            MessageBox.Show("Unimplemented");
         }
 
         private void onLogOut(object sender, RoutedEventArgs e) {
@@ -308,7 +308,7 @@ namespace D21WeShareAdminPanel.View
         }
 
         private void onUpdateTOS(object sender, RoutedEventArgs e) {
-
+            MessageBox.Show("Unimplemented");
         }
 
         private void onGroupUpdate(object sender, RoutedEventArgs e) {
@@ -323,18 +323,19 @@ namespace D21WeShareAdminPanel.View
             MessageBox.Show("Group deleted");
         }
 
-        private void onGroupPassReset(object sender, RoutedEventArgs e) {
+        private void onUserPassReset(object sender, RoutedEventArgs e) {
             viewModel.ResetPasswordOfUser();
+            MessageBox.Show("Password reset sent");
         }
 
         
 
         private void onUserAdd(object sender, RoutedEventArgs e) {
-
+            MessageBox.Show("Unimplemented");
         }
 
         private void onUserDelete(object sender, RoutedEventArgs e) {
-
+            MessageBox.Show("Unimplemented");
         }
 
         private void onGroupOfUserMouseDown(object sender, MouseButtonEventArgs e) {
@@ -343,6 +344,15 @@ namespace D21WeShareAdminPanel.View
                 GroupDTO group = (GroupDTO)BindingOperations.GetBindingExpression(tb, TextBlock.TextProperty).DataItem;
 
                 SwitchToGroupInfo(group);
+            }
+        }
+        
+        private void onUsersInGroupMouseDown(object sender, MouseButtonEventArgs e) {
+            if (e.ClickCount >= 2) {
+                TextBlock tb = (TextBlock)((StackPanel)sender).Children[0];
+                UserDTO user = (UserDTO)BindingOperations.GetBindingExpression(tb, TextBlock.TextProperty).DataItem;
+
+                SwitchToUserInfo(user);
             }
         }
 
@@ -357,5 +367,7 @@ namespace D21WeShareAdminPanel.View
             viewModel.groupInTab = group;
             DisplayGroup();
         }
+
+        
     }
 }

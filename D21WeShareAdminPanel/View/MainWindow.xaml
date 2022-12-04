@@ -129,12 +129,15 @@
                     <StackPanel Grid.Column="1">
                         <TextBlock TextAlignment="Center">Users</TextBlock>
                         <ListView x:Name="UsersInGroupList" ItemsSource="{Binding ocUsersInGroup}" Margin="10 0 10 0">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding firstName}" />
-                                    <GridViewColumn Header="Last name" DisplayMemberBinding="{Binding lastName}" />
-                                </GridView>
-                            </ListView.View>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" MouseDown="onUsersInGroupMouseDown">
+                                        <TextBlock Text="{Binding firstName}"></TextBlock>
+                                        <Separator Width="10" Background="Transparent"></Separator>
+                                        <TextBlock Text="{Binding lastName}"></TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
                         </ListView>
                     </StackPanel>
                     <StackPanel Grid.Column="2">
@@ -173,7 +176,7 @@
                             <RowDefinition Height="30"/>
                         </Grid.RowDefinitions>
 
-                        <ScrollViewer>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel>
                                 <TextBlock FontWeight="DemiBold" TextAlignment="Center">-= User information =-</TextBlock>
                                 <Separator></Separator>
