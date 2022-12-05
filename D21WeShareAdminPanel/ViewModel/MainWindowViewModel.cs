@@ -275,7 +275,15 @@ namespace D21WeShareAdminPanel.ViewModel
             Debug.WriteLine(response);
         }
 
+        public async void UpdateGroup(GroupDTO group) {
+            group.creationDate = groupInTab.creationDate;
+            group.conclusionDate = groupInTab.conclusionDate;
+            group.lastActiveDate = groupInTab.lastActiveDate;
 
+            groupInTab = group;
+            string response = await APIRequester.UpdateGroup(groupInTab, sessionToken);
+            Debug.WriteLine(response);
+        }
 
     }
 }

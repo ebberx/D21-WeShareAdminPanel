@@ -193,7 +193,7 @@
                                 <TextBlock FontWeight="DemiBold">Email:</TextBlock>
                                 <TextBox x:Name="userEmail" Margin="10 0 0 0"></TextBox>
                                 <TextBlock FontWeight="DemiBold">Password:</TextBlock>
-                                <Button x:Name="userResetPasswordBut" Margin="10 0 0 0" Click="onGroupPassReset">Reset</Button>
+                                <Button x:Name="userResetPasswordBut" Margin="10 0 0 0" Click="onUserPassReset">Reset</Button>
                                 <TextBlock FontWeight="DemiBold">Admin:</TextBlock>
                                 <CheckBox x:Name="userIsAdminCheck" Margin="10 0 0 0">Yes/No</CheckBox>
                                 <TextBlock FontWeight="DemiBold">Question ID:</TextBlock>

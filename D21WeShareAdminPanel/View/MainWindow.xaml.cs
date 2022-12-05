@@ -312,6 +312,17 @@ namespace D21WeShareAdminPanel.View
         }
 
         private void onGroupUpdate(object sender, RoutedEventArgs e) {
+            GroupDTO updatedGroup = new GroupDTO();
+
+            // Fill out group with form data
+            updatedGroup.groupId = int.Parse(groupID.Text);
+            updatedGroup.name = groupName.Text;
+            updatedGroup.description = groupDescription.Text;
+            updatedGroup.isPublic = groupIsPublic.IsChecked.Value;
+            updatedGroup.hasConcluded = groupHasConcluded.IsChecked.Value;
+
+            viewModel.UpdateGroup(updatedGroup);
+
             MessageBox.Show("Group updated");
         }
 

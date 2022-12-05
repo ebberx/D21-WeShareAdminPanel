@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using D21WeShareAdminPanel.Model.DTO;
 using System.Text.Json;
+using System.CodeDom;
 
 namespace D21WeShareAdminPanel.Model
 {
@@ -78,7 +79,41 @@ namespace D21WeShareAdminPanel.Model
             request.Headers.Add("Token", token);
 
             // Set http request body
-            string body = JsonSerializer.Serialize<UserDTO>(user);
+            string body = JsonSerializer.Serialize(user);
+            byte[] bodyBytes = System.Text.Encoding.UTF8.GetBytes(body);
+            request.ContentLength = bodyBytes.Length;
+            using (System.IO.Stream requestStream = request.GetRequestStream()) {
+                requestStream.Write(bodyBytes, 0, bodyBytes.Length);
+                requestStream.Flush();
+            }
+
+            // Execute http request and retrieve response
+            System.Net.HttpWebResponse response;
+            try {
+                response = (System.Net.HttpWebResponse)await request.GetResponseAsync();
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+                return null!;
+            }
+
+            // Read response
+            System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream());
+            string responseString = reader.ReadToEnd();
+
+            return responseString;
+        }
+
+        public async static Task<string> UpdateGroup(GroupDTO group, string token) {
+            // Create http request
+            System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("https://api-wan-kenobi.ovh/api/ShareGroup/UpdateGroupDetails/");
+            request.Method = "PUT";
+            request.ContentType = "application/json";
+            request.Accept = "text/plain";
+            request.Headers.Add("Token", token);
+
+            // Set http request body
+            string body = JsonSerializer.Serialize(group);
             Debug.WriteLine(body);
             byte[] bodyBytes = System.Text.Encoding.UTF8.GetBytes(body);
             request.ContentLength = bodyBytes.Length;
