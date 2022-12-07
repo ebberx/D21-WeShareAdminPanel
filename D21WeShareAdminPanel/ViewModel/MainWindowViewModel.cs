@@ -111,9 +111,7 @@ namespace D21WeShareAdminPanel.ViewModel
                 if (groupDetails != null) {
                     List<UserDTO> users = groupDetails.Select(x => x.user!).ToList();
                     ocUsersInGroup = new ObservableCollection<UserDTO>(users);
-                    Debug.WriteLine(users.Count);
                 }
-                    
             }
             catch (Exception e) {
                 Debug.WriteLine(e.Message);
@@ -200,7 +198,6 @@ namespace D21WeShareAdminPanel.ViewModel
 
             List<ExpenseDTO>? expenses;
             try {
-                Debug.WriteLine(response);
                 JsonSerializerOptions options = new() { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull };
                 expenses = JsonSerializer.Deserialize<List<ExpenseDTO>>(response, options);
 
@@ -224,7 +221,6 @@ namespace D21WeShareAdminPanel.ViewModel
 
             ExpenseDTO? expense;
             try {
-                Debug.WriteLine(response);
                 JsonSerializerOptions options = new() { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull };
                 expense = JsonSerializer.Deserialize<ExpenseDTO>(response, options);
 
@@ -248,7 +244,6 @@ namespace D21WeShareAdminPanel.ViewModel
 
             ExpenseDTO? expense;
             try {
-                Debug.WriteLine(response);
                 JsonSerializerOptions options = new() { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull };
                 expense = JsonSerializer.Deserialize<ExpenseDTO>(response, options);
 
@@ -266,24 +261,20 @@ namespace D21WeShareAdminPanel.ViewModel
         }
 
         public async void UpdateUser(UserDTO user) {
-            user.password = userInTab.password;
-            user.address = userInTab.address;
-            user.questionString = userInTab.questionString;
-            
             userInTab = user;
-            string response = await APIRequester.UpdateUser(userInTab, sessionToken);
+            string response = await APIRequester.UpdateUser(new UpdateUserDTO().SetUpdateUserDTO(userInTab), sessionToken);
             Debug.WriteLine(response);
         }
 
         public async void UpdateGroup(GroupDTO group) {
-            group.creationDate = groupInTab.creationDate;
-            group.conclusionDate = groupInTab.conclusionDate;
-            group.lastActiveDate = groupInTab.lastActiveDate;
-
             groupInTab = group;
             string response = await APIRequester.UpdateGroup(groupInTab, sessionToken);
             Debug.WriteLine(response);
         }
 
+
+        public void Logout() {
+            APIRequester.Logout(sessionToken);
+        }
     }
 }

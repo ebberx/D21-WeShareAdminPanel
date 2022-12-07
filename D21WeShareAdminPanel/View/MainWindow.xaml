@@ -101,11 +101,11 @@
                             <TextBlock FontWeight="DemiBold" TextAlignment="Center">-= Group information =-</TextBlock>
                             <Separator></Separator>
                             <TextBlock FontWeight="DemiBold">Group ID:</TextBlock>
-                            <TextBlock x:Name="groupID" Margin="10 0 0 0">0</TextBlock>
+                            <TextBlock x:Name="groupID" Margin="10 0 0 0"></TextBlock>
                             <TextBlock FontWeight="DemiBold">Group name:</TextBlock>
-                            <TextBox x:Name="groupName" Margin="10 0 0 0">Group 1</TextBox>
+                            <TextBox x:Name="groupName" Margin="10 0 0 0"></TextBox>
                             <TextBlock FontWeight="DemiBold">Description:</TextBlock>
-                            <TextBox x:Name="groupDescription" Margin="10 0 0 0">This is a group</TextBox>
+                            <TextBox x:Name="groupDescription" Margin="10 0 0 0"></TextBox>
                             <TextBlock FontWeight="DemiBold">Is public:</TextBlock>
                             <CheckBox x:Name="groupIsPublic" Margin="10 0 0 0">Yes/No</CheckBox>
                             <TextBlock FontWeight="DemiBold">Has concluded:</TextBlock>
@@ -196,8 +196,8 @@
                                 <Button x:Name="userResetPasswordBut" Margin="10 0 0 0" Click="onUserPassReset">Reset</Button>
                                 <TextBlock FontWeight="DemiBold">Admin:</TextBlock>
                                 <CheckBox x:Name="userIsAdminCheck" Margin="10 0 0 0">Yes/No</CheckBox>
-                                <TextBlock FontWeight="DemiBold">Question ID:</TextBlock>
-                                <TextBlock x:Name="userQuestionIDBox" Margin="10 0 0 0"></TextBlock>
+                                <TextBlock FontWeight="DemiBold">Question:</TextBlock>
+                                <TextBlock x:Name="userQuestionBox" Margin="10 0 0 0"></TextBlock>
                                 <TextBlock FontWeight="DemiBold">Security Answer:</TextBlock>
                                 <TextBox x:Name="userSecurityAnswerBox" Margin="10 0 0 0" Height="auto" TextWrapping="Wrap"></TextBox>
                                 <TextBlock FontWeight="DemiBold">Is disabled:</TextBlock>

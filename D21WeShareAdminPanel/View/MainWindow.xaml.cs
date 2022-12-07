@@ -26,7 +26,7 @@ namespace D21WeShareAdminPanel.View
     {
         MainWindowViewModel viewModel;
         string sessionToken;
-
+        bool didLogout = false;
 
 
         public MainWindow(String _sessionToken) {
@@ -38,6 +38,9 @@ namespace D21WeShareAdminPanel.View
             // Update UI delegates
             viewModel.DisplayGroup += DisplayGroup;
             viewModel.DisplayUser += DisplayUser;
+
+            // Run code on window close
+            this.Closed += (o, e) => { if (!didLogout) { viewModel.Logout(); didLogout = true; } };
 
             // Save session token for later use
             this.sessionToken = _sessionToken;
@@ -64,33 +67,13 @@ namespace D21WeShareAdminPanel.View
             userPhoneNumber.Text = viewModel.userInTab.phoneNumber;
             userEmail.Text = viewModel.userInTab.email;
             userIsAdminCheck.IsChecked = viewModel.userInTab.isAdmin;
-            userQuestionIDBox.Text = viewModel.userInTab.questionId.ToString();
+            userQuestionBox.Text = viewModel.userInTab.question;
             userSecurityAnswerBox.Text = viewModel.userInTab.securityAnswer;
             userIsDisabledCheck.IsChecked = viewModel.userInTab.isDisabled;
             userIsBlacklistedCheck.IsChecked = viewModel.userInTab.isBlacklisted;
 
             // Query groups that user is a part of
             viewModel.GetAllGroupsForUser(viewModel.userInTab.userId);
-        }
-
-        private void onUserUpdate(object sender, RoutedEventArgs e) {
-
-            UserDTO updatedUser = new UserDTO();
-
-            // Fill updatedUser with form data
-            updatedUser.userId = Int32.Parse(userUserID.Text);
-            updatedUser.userName = userUserName.Text;
-            updatedUser.firstName = userFirstName.Text;
-            updatedUser.lastName = userLastName.Text;
-            updatedUser.phoneNumber = userPhoneNumber.Text;
-            updatedUser.email = userEmail.Text;
-            updatedUser.isAdmin = (bool)userIsAdminCheck.IsChecked;
-            updatedUser.questionId = Int32.Parse(userQuestionIDBox.Text);
-            updatedUser.securityAnswer = userSecurityAnswerBox.Text;
-            updatedUser.isDisabled = (bool)userIsDisabledCheck.IsChecked;
-            updatedUser.isBlacklisted = (bool)userIsBlacklistedCheck.IsChecked;
-
-            viewModel.UpdateUser(updatedUser);
         }
 
         private async void onSearchGroupName(object sender, RoutedEventArgs e) {
@@ -299,6 +282,13 @@ namespace D21WeShareAdminPanel.View
         }
 
         private void onLogOut(object sender, RoutedEventArgs e) {
+
+            // Logout from backend
+            if (!didLogout) {
+                viewModel.Logout();
+                didLogout = true;
+            }
+            
             // Show login dialog
             LoginDialog loginDialog = new LoginDialog();
             loginDialog.Show();
@@ -312,6 +302,12 @@ namespace D21WeShareAdminPanel.View
         }
 
         private void onGroupUpdate(object sender, RoutedEventArgs e) {
+
+            if (viewModel.groupInTab == null) {
+                MessageBox.Show("No group selected");
+                return;
+            }
+
             GroupDTO updatedGroup = new GroupDTO();
 
             // Fill out group with form data
@@ -320,6 +316,10 @@ namespace D21WeShareAdminPanel.View
             updatedGroup.description = groupDescription.Text;
             updatedGroup.isPublic = groupIsPublic.IsChecked.Value;
             updatedGroup.hasConcluded = groupHasConcluded.IsChecked.Value;
+
+            updatedGroup.creationDate = viewModel.groupInTab.creationDate;
+            updatedGroup.conclusionDate = viewModel.groupInTab.conclusionDate;
+            updatedGroup.lastActiveDate = viewModel.groupInTab.lastActiveDate;
 
             viewModel.UpdateGroup(updatedGroup);
 
@@ -339,7 +339,37 @@ namespace D21WeShareAdminPanel.View
             MessageBox.Show("Password reset sent");
         }
 
-        
+        private void onUserUpdate(object sender, RoutedEventArgs e) {
+
+            if (viewModel.userInTab == null) {
+                MessageBox.Show("No user selected");
+                return;
+            }
+
+            UserDTO updatedUser = new UserDTO();
+
+            // Fill updatedUser with form data
+            updatedUser.userId = Int32.Parse(userUserID.Text);
+            updatedUser.userName = userUserName.Text;
+            updatedUser.firstName = userFirstName.Text;
+            updatedUser.lastName = userLastName.Text;
+            updatedUser.phoneNumber = userPhoneNumber.Text;
+            updatedUser.email = userEmail.Text;
+            updatedUser.isAdmin = (bool)userIsAdminCheck.IsChecked;
+            updatedUser.questionId = viewModel.userInTab.questionId;
+            updatedUser.securityAnswer = userSecurityAnswerBox.Text;
+            updatedUser.isDisabled = (bool)userIsDisabledCheck.IsChecked;
+            updatedUser.isBlacklisted = (bool)userIsBlacklistedCheck.IsChecked;
+            updatedUser.question = userQuestionBox.Text;
+
+            updatedUser.password = viewModel.userInTab.password;
+            updatedUser.address = viewModel.userInTab.address;
+            updatedUser.question = viewModel.userInTab.question;
+
+            viewModel.UpdateUser(updatedUser);
+
+            MessageBox.Show("User updated");
+        }
 
         private void onUserAdd(object sender, RoutedEventArgs e) {
             MessageBox.Show("Unimplemented");
@@ -379,6 +409,6 @@ namespace D21WeShareAdminPanel.View
             DisplayGroup();
         }
 
-        
+                
     }
 }

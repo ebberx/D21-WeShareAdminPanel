@@ -26,6 +26,7 @@ namespace D21WeShareAdminPanel.Model
             using (System.IO.Stream requestStream = request.GetRequestStream()) {
                 requestStream.Write(bodyBytes, 0, bodyBytes.Length);
                 requestStream.Flush();
+                requestStream.Close();
             }
 
             // Execute http request and retrieve response
@@ -40,9 +41,56 @@ namespace D21WeShareAdminPanel.Model
             
             // Read response
             System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream());
-            string token = reader.ReadToEnd();
+            string res = reader.ReadToEnd();
+            
+            // Contains token on successful login
+            if(res.Contains("Already"))
+                return null!;
+            else
+                return res;
+        }
 
-            return token;
+        public static void Logout(string token) {
+
+            Debug.WriteLine("Logout\nToken: "+ token);
+
+            // Send request to get user id from token
+            System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("https://api-wan-kenobi.ovh/api/Main/GetUserIDOnToken/" + token);
+            request.Method = "Get";
+            request.ContentType = "application/json";
+            request.Accept = "text/plain";
+
+            System.Net.HttpWebResponse response;
+            try {
+                response = (System.Net.HttpWebResponse)request.GetResponse();
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+                return;
+            }
+
+            System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream());
+            string userid = reader.ReadToEnd();
+
+            Debug.WriteLine("User ID: " + userid);
+
+            // Send logout request
+            request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("https://api-wan-kenobi.ovh/api/Main/Logout/" + userid);
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            request.Accept = "text/plain";
+
+            try {
+                response = (System.Net.HttpWebResponse)request.GetResponse();
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+                return;
+            }
+
+            reader = new System.IO.StreamReader(response.GetResponseStream());
+            string res = reader.ReadToEnd();
+            Debug.WriteLine(res);
         }
 
         public async static Task<string> Get(string url, string token) {
@@ -62,15 +110,16 @@ namespace D21WeShareAdminPanel.Model
                 Debug.WriteLine(e.Message);
                 return null!;
             }
-
+            
             // Read response
             System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream());
             string responseString = reader.ReadToEnd();
-
+            
+            Debug.WriteLine("Get response:\n"+responseString);
             return responseString;
         }
 
-        public async static Task<string> UpdateUser(UserDTO user, string token) {
+        public async static Task<string> UpdateUser(UpdateUserDTO user, string token) {
             // Create http request
             System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("https://api-wan-kenobi.ovh/api/ShareUser/UpdateUser");
             request.Method = "PUT";
@@ -87,6 +136,8 @@ namespace D21WeShareAdminPanel.Model
                 requestStream.Flush();
             }
 
+            Debug.WriteLine("body:\n" + body);
+
             // Execute http request and retrieve response
             System.Net.HttpWebResponse response;
             try {
@@ -100,6 +151,7 @@ namespace D21WeShareAdminPanel.Model
             // Read response
             System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream());
             string responseString = reader.ReadToEnd();
+            Debug.WriteLine("response:\n" + responseString);
 
             return responseString;
         }
@@ -122,6 +174,8 @@ namespace D21WeShareAdminPanel.Model
                 requestStream.Flush();
             }
 
+            Debug.WriteLine("body:\n" + body);
+
             // Execute http request and retrieve response
             System.Net.HttpWebResponse response;
             try {
@@ -135,6 +189,8 @@ namespace D21WeShareAdminPanel.Model
             // Read response
             System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream());
             string responseString = reader.ReadToEnd();
+
+            Debug.WriteLine("response:\n" + responseString);
 
             return responseString;
         }
@@ -155,6 +211,7 @@ namespace D21WeShareAdminPanel.Model
                 Debug.WriteLine(e.Message);
                 return null!;
             }
+            //Debug.WriteLine(response);
 
             // Read response
             System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream());
