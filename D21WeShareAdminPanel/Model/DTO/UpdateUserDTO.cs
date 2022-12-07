@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace D21WeShareAdminPanel.Model.DTO
 {
-    public class UserDTO {
+    public class UpdateUserDTO {
         public int userId { get; set; }
         public string? userName { get; set; }
         public string? phoneNumber { get; set; }
@@ -20,6 +20,24 @@ namespace D21WeShareAdminPanel.Model.DTO
         public string? securityAnswer { get; set; }
         public bool isDisabled { get; set; }
         public bool isBlacklisted { get; set; }
-        public string? question { get; set; }
+
+        public UpdateUserDTO SetUpdateUserDTO(UserDTO user) {
+            // Fill out UpdateUserDTO fields with UserDTO fields
+            userId = user.userId;
+            userName = user.userName;
+            phoneNumber = user.phoneNumber;
+            firstName = user.firstName;
+            lastName = user.lastName;
+            email = user.email;
+            password = user.password;
+            isAdmin = user.isAdmin;
+            address = user.address;
+            questionId = user.questionId;
+            securityAnswer = user.securityAnswer;
+            isDisabled = user.isDisabled;
+            isBlacklisted = user.isBlacklisted;
+
+            return this;
+        }
     }
 }
