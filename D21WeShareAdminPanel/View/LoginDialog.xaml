@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:D21WeShareAdminPanel.View"
         mc:Ignorable="d"
-        Title="LoginDialog" Height="250" Width="400">
+        Title="Login" Height="250" Width="400">
     <StackPanel Orientation="Vertical" Width="250">
         
         <Separator Height="16" Background="Transparent"></Separator>
