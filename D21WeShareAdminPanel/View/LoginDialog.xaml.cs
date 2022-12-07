@@ -28,12 +28,15 @@ namespace D21WeShareAdminPanel.View
         }
 
         private void OnLogin(object sender, RoutedEventArgs e) {
-            viewModel.Login(userBox.Text, passwordBox.Text);                                                                                                                                                                                                                                                                                                                                                                                                                                     
-            
+            viewModel.Login(userBox.Text, passwordBox.Text);
+
             if (viewModel.sessionToken != null) {
                 MainWindow mainWindow = new MainWindow(viewModel.sessionToken);
                 mainWindow.Show();
                 this.Close();
+            }
+            else {
+                MessageBox.Show("Login failed");
             }
             
         }
