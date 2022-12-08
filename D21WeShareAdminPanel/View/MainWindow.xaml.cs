@@ -47,6 +47,10 @@ namespace D21WeShareAdminPanel.View
         }
 
         public void DisplayGroup() {
+
+            if (viewModel.groupInTab == null)
+                return;
+
             // Display group info
             groupID.Text = viewModel.groupInTab.groupId.ToString();
             groupName.Text = viewModel.groupInTab.name;
@@ -59,6 +63,10 @@ namespace D21WeShareAdminPanel.View
         }
 
         public void DisplayUser() {
+
+            if (viewModel.userInTab == null)
+                return;
+            
             // Display group info
             userUserID.Text = viewModel.userInTab.userId.ToString();
             userUserName.Text = viewModel.userInTab.userName;
@@ -89,7 +97,7 @@ namespace D21WeShareAdminPanel.View
                 sp.Orientation = Orientation.Vertical;
 
                 sp.Children.Add(new Separator() { Height = 1 });
-                TextBlock title = new TextBlock() { Text = "-= Group Name =- " };
+                TextBlock title = new TextBlock() { Text = "-= Group Name =-" };
                 title.TextAlignment = TextAlignment.Center;
                 sp.Children.Add(title);
                 sp.Children.Add(new TextBlock() { Text = group.name });
@@ -314,8 +322,8 @@ namespace D21WeShareAdminPanel.View
             updatedGroup.groupId = int.Parse(groupID.Text);
             updatedGroup.name = groupName.Text;
             updatedGroup.description = groupDescription.Text;
-            updatedGroup.isPublic = groupIsPublic.IsChecked.Value;
-            updatedGroup.hasConcluded = groupHasConcluded.IsChecked.Value;
+            updatedGroup.isPublic = groupIsPublic.IsChecked!.Value;
+            updatedGroup.hasConcluded = groupHasConcluded.IsChecked!.Value;
 
             updatedGroup.creationDate = viewModel.groupInTab.creationDate;
             updatedGroup.conclusionDate = viewModel.groupInTab.conclusionDate;
@@ -331,6 +339,11 @@ namespace D21WeShareAdminPanel.View
         }
 
         private void onGroupDelete(object sender, RoutedEventArgs e) {
+            if (viewModel.groupInTab == null) {
+                MessageBox.Show("No group selected");
+                return;
+            }
+            
             MessageBox.Show("Group deleted");
         }
 
@@ -355,11 +368,11 @@ namespace D21WeShareAdminPanel.View
             updatedUser.lastName = userLastName.Text;
             updatedUser.phoneNumber = userPhoneNumber.Text;
             updatedUser.email = userEmail.Text;
-            updatedUser.isAdmin = (bool)userIsAdminCheck.IsChecked;
+            updatedUser.isAdmin = (bool)userIsAdminCheck.IsChecked!;
             updatedUser.questionId = viewModel.userInTab.questionId;
             updatedUser.securityAnswer = userSecurityAnswerBox.Text;
-            updatedUser.isDisabled = (bool)userIsDisabledCheck.IsChecked;
-            updatedUser.isBlacklisted = (bool)userIsBlacklistedCheck.IsChecked;
+            updatedUser.isDisabled = (bool)userIsDisabledCheck.IsChecked!;
+            updatedUser.isBlacklisted = (bool)userIsBlacklistedCheck.IsChecked!;
             updatedUser.question = userQuestionBox.Text;
 
             updatedUser.password = viewModel.userInTab.password;
@@ -372,11 +385,32 @@ namespace D21WeShareAdminPanel.View
         }
 
         private void onUserAdd(object sender, RoutedEventArgs e) {
-            MessageBox.Show("Unimplemented");
+            AddUserDialog view = new AddUserDialog();
+            view.Show();
         }
 
         private void onUserDelete(object sender, RoutedEventArgs e) {
-            MessageBox.Show("Unimplemented");
+            if (viewModel.userInTab == null) {
+                MessageBox.Show("No user selected");
+                return;
+            }
+
+            viewModel.DeleteUser();
+
+            // Reset form data
+            userUserID.Text = "";
+            userUserName.Text = "";
+            userFirstName.Text = "";
+            userLastName.Text = "";
+            userPhoneNumber.Text = "";
+            userEmail.Text = "";
+            userIsAdminCheck.IsChecked = false;
+            userSecurityAnswerBox.Text = "";
+            userIsDisabledCheck.IsChecked = false;
+            userIsBlacklistedCheck.IsChecked = false;
+            userQuestionBox.Text = "";
+            
+            MessageBox.Show("Deleted user");
         }
 
         private void onGroupOfUserMouseDown(object sender, MouseButtonEventArgs e) {

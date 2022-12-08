@@ -56,7 +56,7 @@ namespace D21WeShareAdminPanel.Model
 
             // Send request to get user id from token
             System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("https://api-wan-kenobi.ovh/api/Main/GetUserIDOnToken/" + token);
-            request.Method = "Get";
+            request.Method = "GET";
             request.ContentType = "application/json";
             request.Accept = "text/plain";
 
@@ -218,6 +218,99 @@ namespace D21WeShareAdminPanel.Model
             string token = reader.ReadToEnd();
 
             return token;
+        }
+
+        public async static Task<string> AddUser(NewUserDTO user) {
+            // Create http request
+            System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("https://api-wan-kenobi.ovh/api/ShareUser/CreateUser");
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            request.Accept = "text/plain";
+
+            // Set http request body
+            string body = JsonSerializer.Serialize(user);
+            byte[] bodyBytes = System.Text.Encoding.UTF8.GetBytes(body);
+            request.ContentLength = bodyBytes.Length;
+            using (System.IO.Stream requestStream = request.GetRequestStream()) {
+                requestStream.Write(bodyBytes, 0, bodyBytes.Length);
+                requestStream.Flush();
+                requestStream.Close();
+            }
+
+            // Execute http request and retrieve response
+            System.Net.HttpWebResponse response;
+            try {
+                response = (System.Net.HttpWebResponse)await request.GetResponseAsync();
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+                return null!;
+            }
+
+            // Read response
+            System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream());
+            string res = reader.ReadToEnd();
+
+            return res;
+        }
+
+
+        public async static Task<string> DeleteUser(int userid) {
+            // Create http request
+            System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("https://api-wan-kenobi.ovh/api/UserGroup/DeleteUser/" + userid);
+            request.Method = "DELETE";
+            request.ContentType = "application/json";
+            request.Accept = "text/plain";
+
+            // Execute http request and retrieve response
+            System.Net.HttpWebResponse response;
+            try {
+                response = (System.Net.HttpWebResponse)await request.GetResponseAsync();
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+                return null!;
+            }
+
+            // Read response
+            System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream());
+            string res = reader.ReadToEnd();
+
+            return res;
+        }
+
+        public async static Task<string> AddGroup(NewGroupDTO group) {
+            // Create http request
+            System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("https://api-wan-kenobi.ovh/api/ShareGroup/CreateGroup");
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            request.Accept = "text/plain";
+
+            // Set http request body
+            string body = JsonSerializer.Serialize(group);
+            byte[] bodyBytes = System.Text.Encoding.UTF8.GetBytes(body);
+            request.ContentLength = bodyBytes.Length;
+            using (System.IO.Stream requestStream = request.GetRequestStream()) {
+                requestStream.Write(bodyBytes, 0, bodyBytes.Length);
+                requestStream.Flush();
+                requestStream.Close();
+            }
+
+            // Execute http request and retrieve response
+            System.Net.HttpWebResponse response;
+            try {
+                response = (System.Net.HttpWebResponse)await request.GetResponseAsync();
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+                return null!;
+            }
+
+            // Read response
+            System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream());
+            string res = reader.ReadToEnd();
+
+            return res;
         }
     }
 }

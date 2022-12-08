@@ -272,6 +272,10 @@ namespace D21WeShareAdminPanel.ViewModel
             Debug.WriteLine(response);
         }
 
+        public async void DeleteUser() {
+            await APIRequester.DeleteUser(userInTab.userId);
+            userInTab = null!;
+        }
 
         public void Logout() {
             APIRequester.Logout(sessionToken);

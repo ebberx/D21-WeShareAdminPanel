@@ -260,7 +260,7 @@
                             </Grid.RowDefinitions>
 
                             <Button Grid.Column="0" Click="onGroupUpdate">Update</Button>
-                            <Button Grid.Column="1" Click="onGroupAdd">Add</Button>
+                            <Button Grid.Column="1" Click="onGroupAdd">Create</Button>
                             <Button Grid.Column="2" Click="onGroupDelete">Delete</Button>
                         </Grid>
                     </Grid>
@@ -356,7 +356,7 @@
                             </Grid.RowDefinitions>
 
                             <Button Grid.Column="0" Click="onUserUpdate">Update</Button>
-                            <Button Grid.Column="1" Click="onUserAdd">Add</Button>
+                            <Button Grid.Column="1" Click="onUserAdd">Create</Button>
                             <Button Grid.Column="2" Click="onUserDelete">Delete</Button>
                         </Grid>
                     </Grid>
@@ -388,6 +388,10 @@
                         </ListView>
                     </StackPanel>
                 </Grid>
+            </TabItem>
+
+            <TabItem Header="Invites">
+                <TextBlock>This is the invite tab for a future iteration</TextBlock>
             </TabItem>
 
             <!-- Next iteration

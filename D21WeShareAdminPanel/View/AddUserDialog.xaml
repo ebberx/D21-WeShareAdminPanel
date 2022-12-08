@@ -5,8 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:D21WeShareAdminPanel.View"
         mc:Ignorable="d"
-        Title="AddUserDialog" Height="450" Width="300">
+        Title="Create user" Height="450" Width="300">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Margin="10 10 10 10">
+            <TextBlock>User name:</TextBlock>
+            <TextBox x:Name="inputName"></TextBox>
+            <TextBlock>Phone number:</TextBlock>
+            <TextBox x:Name="inputPhone"></TextBox>
+            <TextBlock>First name:</TextBlock>
+            <TextBox x:Name="inputFirstName"></TextBox>
+            <TextBlock>Last name:</TextBlock>
+            <TextBox x:Name="inputLastName"></TextBox>
+            <TextBlock>Email:</TextBlock>
+            <TextBox x:Name="inputEmail"></TextBox>
+            <TextBlock>Password:</TextBlock>
+            <TextBox x:Name="inputPassword"></TextBox>
+            <StackPanel Orientation="Horizontal" Margin="0 12 0 6">
+                <TextBlock VerticalAlignment="Center" Margin="0 0 2 0">Admin:</TextBlock>
+                <CheckBox VerticalAlignment="Center" x:Name="inputIsAdmin"></CheckBox>
+            </StackPanel>
+            <TextBlock>Address:</TextBlock>
+            <TextBox x:Name="inputAddress"></TextBox>
+            <TextBlock>Question:</TextBlock>
+            <ComboBox x:Name="inputQuestion" ItemsSource="{Binding questions}" DisplayMemberPath="question"></ComboBox>
+            <TextBlock>Answer:</TextBlock>
+            <TextBox Height="40" x:Name="inputAnswer"></TextBox>
+            
+        </StackPanel>
         
+        <Button Grid.Row="1" Width="60" Height="22" HorizontalAlignment="Left" Margin="10 0 0 0" Click="onCreateUser">Create</Button>
+        <Button Grid.Row="1" Width="60" Height="22" HorizontalAlignment="Right" Margin="0 0 10 0" Click="onCancelDialog">Cancel</Button>
+
     </Grid>
 </Window>

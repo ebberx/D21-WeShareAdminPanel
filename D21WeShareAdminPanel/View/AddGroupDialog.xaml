@@ -5,14 +5,38 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:D21WeShareAdminPanel.View"
         mc:Ignorable="d"
-        Title="AddGroupDialog" Height="450" Width="300">
+        Title="Create group" Height="320" Width="300">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
-        
+
+        <StackPanel Margin="10 10 10 10">
+            <TextBlock>Group name:</TextBlock>
+            <TextBox></TextBox>
+            <TextBlock>Description:</TextBlock>
+            <TextBox></TextBox>
+            <TextBlock>Group Owner User ID:</TextBlock>
+            <TextBox></TextBox>
+            <TextBlock>Creation date:</TextBlock>
+            <DatePicker></DatePicker>
+            <TextBlock>Conclusion date:</TextBlock>
+            <DatePicker></DatePicker>
+            <TextBlock>Last Active date:</TextBlock>
+            <DatePicker></DatePicker>
+            <StackPanel Orientation="Horizontal" Margin="0 4 0 0">
+                <TextBlock VerticalAlignment="Center"  Margin="0 0 2 0">Public:</TextBlock>
+                <CheckBox VerticalAlignment="Center"></CheckBox>
+            </StackPanel>
+
+        </StackPanel>
+
+        <Button Grid.Row="1" Width="60" Height="22" HorizontalAlignment="Left" Margin="10 0 0 0">Create</Button>
+        <Button Grid.Row="1" Width="60" Height="22" HorizontalAlignment="Right" Margin="0 0 10 0">Cancel</Button>
+
     </Grid>
 </Window>
