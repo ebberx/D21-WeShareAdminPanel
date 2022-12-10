@@ -16,6 +16,7 @@ using D21WeShareAdminPanel.ViewModel;
 using D21WeShareAdminPanel.Model.DTO;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
+using D21WeShareAdminPanel.Model;
 
 namespace D21WeShareAdminPanel.View
 {
@@ -60,13 +61,18 @@ namespace D21WeShareAdminPanel.View
 
             // Query users in group
             viewModel.GetGroupDetailsByID(viewModel.groupInTab.groupId);
+
+            // Display expenses in group
+            viewModel.GetExpensesForGroup(viewModel.groupInTab.groupId);
+            // Display In Payments in group
+            viewModel.GetInPaymentsForGroup(viewModel.groupInTab.groupId);
         }
 
         public void DisplayUser() {
 
             if (viewModel.userInTab == null)
                 return;
-            
+
             // Display group info
             userUserID.Text = viewModel.userInTab.userId.ToString();
             userUserName.Text = viewModel.userInTab.userName;
@@ -82,6 +88,11 @@ namespace D21WeShareAdminPanel.View
 
             // Query groups that user is a part of
             viewModel.GetAllGroupsForUser(viewModel.userInTab.userId);
+
+            // Display expenses for user
+            viewModel.GetInPaymentsForUser(viewModel.userInTab.userId);
+            // Display in payments for user
+            viewModel.GetExpensesForUser(viewModel.userInTab.userId);
         }
 
         private async void onSearchGroupName(object sender, RoutedEventArgs e) {
@@ -177,7 +188,7 @@ namespace D21WeShareAdminPanel.View
                 resultView.Children.Remove(sp);
             };
             buttonSP.Children.Add(deleteBut);
-            
+
             sp.Children.Add(buttonSP);
             sp.Children.Add(new Separator() { Height = 1 });
             resultView.Children.Add(sp);
@@ -296,7 +307,7 @@ namespace D21WeShareAdminPanel.View
                 viewModel.Logout();
                 didLogout = true;
             }
-            
+
             // Show login dialog
             LoginDialog loginDialog = new LoginDialog();
             loginDialog.Show();
@@ -306,7 +317,8 @@ namespace D21WeShareAdminPanel.View
         }
 
         private void onUpdateTOS(object sender, RoutedEventArgs e) {
-            MessageBox.Show("Unimplemented");
+            TermsOfServiceDialog view = new TermsOfServiceDialog();
+            view.Show();
         }
 
         private void onGroupUpdate(object sender, RoutedEventArgs e) {
@@ -335,7 +347,8 @@ namespace D21WeShareAdminPanel.View
         }
 
         private void onGroupAdd(object sender, RoutedEventArgs e) {
-            MessageBox.Show("Group added");
+            AddGroupDialog view = new AddGroupDialog();
+            view.Show();
         }
 
         private void onGroupDelete(object sender, RoutedEventArgs e) {
@@ -343,7 +356,16 @@ namespace D21WeShareAdminPanel.View
                 MessageBox.Show("No group selected");
                 return;
             }
-            
+
+            viewModel.DeleteGroup();
+
+            // Reset form data
+            groupID.Text = "";
+            groupName.Text = "";
+            groupDescription.Text = "";
+            groupIsPublic.IsChecked = false;
+            groupHasConcluded.IsChecked = false;
+
             MessageBox.Show("Group deleted");
         }
 
@@ -409,22 +431,22 @@ namespace D21WeShareAdminPanel.View
             userIsDisabledCheck.IsChecked = false;
             userIsBlacklistedCheck.IsChecked = false;
             userQuestionBox.Text = "";
-            
+
             MessageBox.Show("Deleted user");
         }
 
         private void onGroupOfUserMouseDown(object sender, MouseButtonEventArgs e) {
             if (e.ClickCount >= 2) {
-                TextBlock tb = (TextBlock)((StackPanel)sender).Children[0];
+                TextBlock tb = (TextBlock)((Grid)sender).Children[0];
                 GroupDTO group = (GroupDTO)BindingOperations.GetBindingExpression(tb, TextBlock.TextProperty).DataItem;
 
                 SwitchToGroupInfo(group);
             }
         }
-        
+
         private void onUsersInGroupMouseDown(object sender, MouseButtonEventArgs e) {
             if (e.ClickCount >= 2) {
-                TextBlock tb = (TextBlock)((StackPanel)sender).Children[0];
+                TextBlock tb = (TextBlock)((Grid)sender).Children[0];
                 UserDTO user = (UserDTO)BindingOperations.GetBindingExpression(tb, TextBlock.TextProperty).DataItem;
 
                 SwitchToUserInfo(user);
@@ -443,6 +465,68 @@ namespace D21WeShareAdminPanel.View
             DisplayGroup();
         }
 
-                
+        private void onExpenseDelete(object sender, RoutedEventArgs e) {
+            MessageBox.Show("Delete :-)");
+        }
+
+        private void onExpensesOfGroupMouseDown(object sender, MouseButtonEventArgs e) {
+            if (e.ClickCount == 2) {
+                Debug.WriteLine("dobule click");
+            }
+        }
+
+        private void onInPaymentsOfGroupMouseDown(object sender, MouseButtonEventArgs e) {
+            if (e.ClickCount == 2) {
+                Debug.WriteLine("dobule click");
+            }
+        }
+
+        private void onExpensesOfUserMouseDown(object sender, MouseButtonEventArgs e) {
+            if (e.ClickCount == 2) {
+                Debug.WriteLine("dobule click");
+            }
+        }
+
+        private void onInPaymentsOfUserMouseDown(object sender, MouseButtonEventArgs e) {
+            if (e.ClickCount == 2) {
+                Debug.WriteLine("dobule click");
+            }
+        }
+        private async void onGroupExpenseDelete(object sender, RoutedEventArgs e) {
+            TextBlock tb = (TextBlock)((Grid)((Button)sender).Parent).Children[0];
+            ExpenseDTO expense = (ExpenseDTO)BindingOperations.GetBindingExpression(tb, TextBlock.TextProperty).DataItem;
+
+            await APIRequester.Delete("https://api-wan-kenobi.ovh/api/Expense/DeleteExpenditure/" + expense.expenseId);
+
+            viewModel.ocExpensesOfGroup.Remove(expense);
+        }
+
+        private async void onGroupInPaymentDelete(object sender, RoutedEventArgs e) {
+
+            TextBlock tb = (TextBlock)((Grid)((Button)sender).Parent).Children[0];
+            InPaymentDTO inpayment = (InPaymentDTO)BindingOperations.GetBindingExpression(tb, TextBlock.TextProperty).DataItem;
+
+            await APIRequester.Delete("https://api-wan-kenobi.ovh/api/InPayment/DeleteInPayment/" + inpayment.transactionID);
+
+            viewModel.ocInPaymentsOfGroup.Remove(inpayment);
+        }
+
+        private async void onUserExpenseDelete(object sender, RoutedEventArgs e) {
+            TextBlock tb = (TextBlock)((Grid)((Button)sender).Parent).Children[0];
+            ExpenseDTO expense = (ExpenseDTO)BindingOperations.GetBindingExpression(tb, TextBlock.TextProperty).DataItem;
+
+            await APIRequester.Delete("https://api-wan-kenobi.ovh/api/Expense/DeleteExpenditure/" + expense.expenseId);
+
+            viewModel.ocExpensesOfUser.Remove(expense);
+        }
+
+        private async void onUserInPaymentDelete(object sender, RoutedEventArgs e) {
+            TextBlock tb = (TextBlock)((Grid)((Button)sender).Parent).Children[0];
+            InPaymentDTO inpayment = (InPaymentDTO)BindingOperations.GetBindingExpression(tb, TextBlock.TextProperty).DataItem;
+
+            await APIRequester.Delete("https://api-wan-kenobi.ovh/api/InPayment/DeleteInPayment/" + inpayment.transactionID);
+
+            viewModel.ocInPaymentsOfUser.Remove(inpayment);
+        }
     }
 }

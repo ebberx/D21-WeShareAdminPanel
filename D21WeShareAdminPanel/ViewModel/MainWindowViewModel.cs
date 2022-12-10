@@ -11,6 +11,9 @@ using D21WeShareAdminPanel.Model.DTO;
 using System.Collections.ObjectModel;
 using NNTPClient.Model;
 using Microsoft.Win32;
+using Microsoft.VisualBasic;
+using System.IO;
+using System.ComponentModel;
 
 namespace D21WeShareAdminPanel.ViewModel
 {
@@ -31,6 +34,34 @@ namespace D21WeShareAdminPanel.ViewModel
             set { _ocGroupsOfUser = value; propertyIsChanged(); }
         }
         private ObservableCollection<GroupDTO>? _ocGroupsOfUser;
+
+        // InPayments for the group
+        public ObservableCollection<InPaymentDTO> ocInPaymentsOfGroup {
+            get { return _ocInPaymentsOfGroup!; }
+            set { _ocInPaymentsOfGroup = value; propertyIsChanged(); }
+        }
+        private ObservableCollection<InPaymentDTO>? _ocInPaymentsOfGroup;
+
+        // Expenses for the group
+        public ObservableCollection<ExpenseDTO> ocExpensesOfGroup {
+            get { return _ocExpensesOfGroup!; }
+            set { _ocExpensesOfGroup = value; propertyIsChanged(); }
+        }
+        private ObservableCollection<ExpenseDTO>? _ocExpensesOfGroup;
+
+        // InPayments for the user
+        public ObservableCollection<InPaymentDTO> ocInPaymentsOfUser {
+            get { return _ocInPaymentsOfUser!; }
+            set { _ocInPaymentsOfUser = value; propertyIsChanged(); }
+        }
+        private ObservableCollection<InPaymentDTO>? _ocInPaymentsOfUser;
+
+        // Expenses for the user
+        public ObservableCollection<ExpenseDTO> ocExpensesOfUser {
+            get { return _ocExpensesOfUser!; }
+            set { _ocExpensesOfUser = value; propertyIsChanged(); }
+        }
+        private ObservableCollection<ExpenseDTO>? _ocExpensesOfUser;
 
         // Group tab object and update display method delegate
         public delegate void DisplayGroupDelegate();
@@ -233,6 +264,7 @@ namespace D21WeShareAdminPanel.ViewModel
             return null!;
         }
 
+        /////////////////////////////////////////////////////////////
         public async Task<ExpenseDTO> GetInPaymentByID(string search) {
             string response = await APIRequester.Get("https://api-wan-kenobi.ovh/api/InPayment/GetInPayment/" + search, sessionToken);
 
@@ -256,6 +288,98 @@ namespace D21WeShareAdminPanel.ViewModel
             return null!;
         }
 
+        public async void GetExpensesForGroup(int groupid) {
+            string response = await APIRequester.Get("https://api-wan-kenobi.ovh/api/Expense/GetAllExpensesOnGroupID/" + groupid, sessionToken);
+
+            // Check if response empty
+            if (String.IsNullOrEmpty(response)) {
+                Debug.WriteLine("Response is empty");
+                return;
+            }
+
+            List<ExpenseDTO>? expenses;
+            try {
+                JsonSerializerOptions options = new() { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull };
+                expenses = JsonSerializer.Deserialize<List<ExpenseDTO>>(response, options);
+                if (expenses != null)
+                    ocExpensesOfGroup = new ObservableCollection<ExpenseDTO>(expenses);
+
+                return;
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        public async void GetInPaymentsForGroup(int groupid) {
+            string response = await APIRequester.Get("https://api-wan-kenobi.ovh/api/InPayment/GetAllGroupInPayments/" + groupid, sessionToken);
+
+            // Check if response empty
+            if (String.IsNullOrEmpty(response)) {
+                Debug.WriteLine("Response is empty");
+                return;
+            }
+
+            List<InPaymentDTO>? expenses;
+            try {
+                JsonSerializerOptions options = new() { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull };
+                expenses = JsonSerializer.Deserialize<List<InPaymentDTO>>(response, options);
+                if (expenses != null)
+                    ocInPaymentsOfGroup = new ObservableCollection<InPaymentDTO>(expenses);
+
+                return;
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        public async void GetExpensesForUser(int userid) {
+            string response = await APIRequester.Get("https://api-wan-kenobi.ovh/api/Expense/GetPersonalExpenses/" + userid, sessionToken);
+
+            // Check if response empty
+            if (String.IsNullOrEmpty(response)) {
+                Debug.WriteLine("Response is empty");
+                return;
+            }
+
+            List<ExpenseDTO>? expenses;
+            try {
+                JsonSerializerOptions options = new() { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull };
+                expenses = JsonSerializer.Deserialize<List<ExpenseDTO>>(response, options);
+                if (expenses != null)
+                    ocExpensesOfUser = new ObservableCollection<ExpenseDTO>(expenses);
+
+                return;
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        public async void GetInPaymentsForUser(int userid) {
+            string response = await APIRequester.Get("https://api-wan-kenobi.ovh/api/InPayment/GetAllUserInPayments/" + userid, sessionToken);
+
+            // Check if response empty
+            if (String.IsNullOrEmpty(response)) {
+                Debug.WriteLine("Response is empty");
+                return;
+            }
+
+            List<InPaymentDTO>? expenses;
+            try {
+                JsonSerializerOptions options = new() { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull };
+                expenses = JsonSerializer.Deserialize<List<InPaymentDTO>>(response, options);
+                if (expenses != null)
+                    ocInPaymentsOfUser = new ObservableCollection<InPaymentDTO>(expenses);
+
+                return;
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
         public async void ResetPasswordOfUser() {
             await APIRequester.ResetPassword(userInTab.userId);
         }
@@ -275,6 +399,11 @@ namespace D21WeShareAdminPanel.ViewModel
         public async void DeleteUser() {
             await APIRequester.DeleteUser(userInTab.userId);
             userInTab = null!;
+        }
+
+        public async void DeleteGroup() {
+            await APIRequester.DeleteGroup(groupInTab.groupId);
+            groupInTab = null!;
         }
 
         public void Logout() {

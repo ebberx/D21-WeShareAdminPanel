@@ -10,7 +10,8 @@ using System.CodeDom;
 
 namespace D21WeShareAdminPanel.Model
 {
-    public class APIRequester {
+    public class APIRequester
+    {
 
         public static string Login(string user, string password) {
             // Create http request
@@ -38,13 +39,13 @@ namespace D21WeShareAdminPanel.Model
                 Debug.WriteLine(e.Message);
                 return null!;
             }
-            
+
             // Read response
             System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream());
             string res = reader.ReadToEnd();
-            
+
             // Contains token on successful login
-            if(res.Contains("Already"))
+            if (res.Contains("Already"))
                 return null!;
             else
                 return res;
@@ -52,7 +53,7 @@ namespace D21WeShareAdminPanel.Model
 
         public static void Logout(string token) {
 
-            Debug.WriteLine("Logout\nToken: "+ token);
+            Debug.WriteLine("Logout\nToken: " + token);
 
             // Send request to get user id from token
             System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("https://api-wan-kenobi.ovh/api/Main/GetUserIDOnToken/" + token);
@@ -110,12 +111,12 @@ namespace D21WeShareAdminPanel.Model
                 Debug.WriteLine(e.Message);
                 return null!;
             }
-            
+
             // Read response
             System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream());
             string responseString = reader.ReadToEnd();
-            
-            Debug.WriteLine("Get response:\n"+responseString);
+
+            Debug.WriteLine("Get response:\n" + responseString);
             return responseString;
         }
 
@@ -296,6 +297,89 @@ namespace D21WeShareAdminPanel.Model
                 requestStream.Close();
             }
 
+            // Execute http request and retrieve response
+            System.Net.HttpWebResponse response;
+            try {
+                response = (System.Net.HttpWebResponse)await request.GetResponseAsync();
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+                return null!;
+            }
+
+            // Read response
+            System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream());
+            string res = reader.ReadToEnd();
+
+            return res;
+        }
+
+        public async static Task<string> DeleteGroup(int groupid) {
+            // Create http request
+            System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("https://api-wan-kenobi.ovh/api/UserGroup/DeleteGroup/" + groupid);
+            request.Method = "DELETE";
+            request.ContentType = "application/json";
+            request.Accept = "text/plain";
+
+            // Execute http request and retrieve response
+            System.Net.HttpWebResponse response;
+            try {
+                response = (System.Net.HttpWebResponse)await request.GetResponseAsync();
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+                return null!;
+            }
+
+            // Read response
+            System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream());
+            string res = reader.ReadToEnd();
+
+            return res;
+        }
+
+        public async static Task<string> UpdateTOS(string ToS) {
+            // Create http request
+            System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("https://api-wan-kenobi.ovh/api/TermsOfService/InsertNewTermsOfService");
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            request.Accept = "text/plain";
+
+            // Set http request body
+            string body = JsonSerializer.Serialize(new TermsOfServiceInsertDTO() { lawyerSoup = ToS });
+            Debug.WriteLine(body);
+            byte[] bodyBytes = System.Text.Encoding.UTF8.GetBytes(body);
+            request.ContentLength = bodyBytes.Length;
+            using (System.IO.Stream requestStream = request.GetRequestStream()) {
+                requestStream.Write(bodyBytes, 0, bodyBytes.Length);
+                requestStream.Flush();
+                requestStream.Close();
+            }
+
+            // Execute http request and retrieve response
+            System.Net.HttpWebResponse response;
+            try {
+                response = (System.Net.HttpWebResponse)await request.GetResponseAsync();
+            }
+            catch (Exception e) {
+                Debug.WriteLine(e.Message);
+                return null!;
+            }
+
+            // Read response
+            System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream());
+            string res = reader.ReadToEnd();
+
+            return res;
+        }
+
+        public async static Task<string> Delete(string url) {
+            // Create http request
+            System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(url);
+            request.Method = "DELETE";
+            request.ContentType = "application/json";
+            request.Accept = "text/plain";
+            
             // Execute http request and retrieve response
             System.Net.HttpWebResponse response;
             try {

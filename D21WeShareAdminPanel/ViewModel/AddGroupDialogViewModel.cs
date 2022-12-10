@@ -15,10 +15,5 @@ namespace D21WeShareAdminPanel.ViewModel
         public async void AddGroup(NewGroupDTO group) {
             await APIRequester.AddGroup(group);
         }
-
-        public async void GetQuestions() {
-            string res = await APIRequester.Get("https://api-wan-kenobi.ovh/api/SecurityQuestion/GetAllSecurityQuestions", "");
-
-        }
     }
 }

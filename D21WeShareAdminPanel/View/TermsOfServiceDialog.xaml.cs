@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using D21WeShareAdminPanel.ViewModel;
+
 namespace D21WeShareAdminPanel.View
 {
     /// <summary>
@@ -19,8 +21,24 @@ namespace D21WeShareAdminPanel.View
     /// </summary>
     public partial class TermsOfServiceDialog : Window
     {
+        TermsOfServiceDialogViewModel viewModel;
+
         public TermsOfServiceDialog() {
             InitializeComponent();
+
+            viewModel = new TermsOfServiceDialogViewModel();
+            this.DataContext = viewModel;
+
+            viewModel.GetTOS();
+        }
+
+        private void OnUpdate(object sender, RoutedEventArgs e) {
+            viewModel.UpdateTOS();
+            this.Close();
+        }
+
+        private void OnCancel(object sender, RoutedEventArgs e) {
+            this.Close();
         }
     }
 }

@@ -5,8 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:D21WeShareAdminPanel.View"
         mc:Ignorable="d"
-        Title="Update Terms Of Service" Height="450" Width="300">
+        Title="Terms Of Service Update" Height="320" Width="400">
     <Grid>
-        
+        <StackPanel>
+            <TextBlock Text="Terms of Service" FontSize="20" FontWeight="Bold" Margin="10,10,10,10" />
+            <TextBox TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding TermsOfService}" Height="186" Width="350" Margin="10,10,10,10" VerticalScrollBarVisibility="Auto"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="Update" Click="OnUpdate" Margin="10,0,110,10" Width="60"/>
+                <Button Content="Cancel" Click="OnCancel" Margin="120,0,10,10" Width="60"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>

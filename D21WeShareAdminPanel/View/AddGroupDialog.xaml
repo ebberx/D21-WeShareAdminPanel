@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:D21WeShareAdminPanel.View"
         mc:Ignorable="d"
-        Title="Create group" Height="320" Width="300">
+        Title="Create group" Height="220" Width="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="8*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -17,26 +17,20 @@
 
         <StackPanel Margin="10 10 10 10">
             <TextBlock>Group name:</TextBlock>
-            <TextBox></TextBox>
+            <TextBox x:Name="inputName"></TextBox>
             <TextBlock>Description:</TextBlock>
-            <TextBox></TextBox>
+            <TextBox x:Name="inputDescription"></TextBox>
             <TextBlock>Group Owner User ID:</TextBlock>
-            <TextBox></TextBox>
-            <TextBlock>Creation date:</TextBlock>
-            <DatePicker></DatePicker>
-            <TextBlock>Conclusion date:</TextBlock>
-            <DatePicker></DatePicker>
-            <TextBlock>Last Active date:</TextBlock>
-            <DatePicker></DatePicker>
+            <TextBox x:Name="inputOwnerID"></TextBox>
             <StackPanel Orientation="Horizontal" Margin="0 4 0 0">
                 <TextBlock VerticalAlignment="Center"  Margin="0 0 2 0">Public:</TextBlock>
-                <CheckBox VerticalAlignment="Center"></CheckBox>
+                <CheckBox VerticalAlignment="Center" x:Name="inputIsPublic"></CheckBox>
             </StackPanel>
 
         </StackPanel>
 
-        <Button Grid.Row="1" Width="60" Height="22" HorizontalAlignment="Left" Margin="10 0 0 0">Create</Button>
-        <Button Grid.Row="1" Width="60" Height="22" HorizontalAlignment="Right" Margin="0 0 10 0">Cancel</Button>
+        <Button Grid.Row="1" Width="60" Height="22" HorizontalAlignment="Left" Margin="10 0 0 0" Click="OnCreate">Create</Button>
+        <Button Grid.Row="1" Width="60" Height="22" HorizontalAlignment="Right" Margin="0 0 10 0" Click="onCancel">Cancel</Button>
 
     </Grid>
 </Window>
