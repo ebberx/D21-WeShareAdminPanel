@@ -147,7 +147,17 @@ namespace D21WeShareAdminPanel.View
         }
 
         private async void onSearchGroupID(object sender, RoutedEventArgs e) {
-            GroupDTO groupInfo = await viewModel.GetGroupByID(Int32.Parse(searchGroupIDBox.Text));
+            int id;
+            try {
+                id = Int32.Parse(searchGroupIDBox.Text);
+            }
+            catch (Exception ex) {
+                Debug.WriteLine(ex.Message);
+                MessageBox.Show("Invalid input for Group ID");
+                return;
+            }
+
+            GroupDTO groupInfo = await viewModel.GetGroupByID(id);
 
             if (groupInfo == null)
                 return;
@@ -245,7 +255,17 @@ namespace D21WeShareAdminPanel.View
         }
 
         private async void onSearchUserID(object sender, RoutedEventArgs e) {
-            UserDTO user = await viewModel.GetUsersByID(searchUserIDBox.Text);
+            int id;
+            try {
+                id = Int32.Parse(searchUserIDBox.Text);
+            }
+            catch (Exception ex) {
+                Debug.WriteLine(ex.Message);
+                MessageBox.Show("Invalid input for User ID");
+                return;
+            }
+
+            UserDTO user = await viewModel.GetUsersByID(id);
 
             if (user == null)
                 return;
@@ -291,6 +311,8 @@ namespace D21WeShareAdminPanel.View
             sp.Children.Add(new Separator() { Height = 1 });
             resultView.Children.Add(sp);
         }
+
+        
 
         private void onSearchTransactionName(object sender, RoutedEventArgs e) {
             MessageBox.Show("Unimplemented");
